@@ -55,6 +55,11 @@ function mainGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 % whitebg('k')
 hObject.Color = [0,0,0];
+
+% fcnINIT initializes the figures and axes for data display
+fcnINIT( handles )
+return
+
 %%
 % Temporary LOADING Script
 % Data SETUP
@@ -86,9 +91,7 @@ handles.SYNCFMT = fcnSYNCFMT( FMT, handles.plotDatenumArray );
  
 handles.INFO = INFO;
 handles.FMT = FMT;
-%%
-handles.text2.String = 'READY';
-handles.CurrentIdx = 1;
+% [handles.SYNCFMT.GPS.X, handles.SYNCFMT.GPS.Y] = mfwdtran(handles.tGPS.mstruct, handles.SYNCFMT.GPS.Lat, handles.SYNCFMT.GPS.Lng);
 
 % Setting the Slider Min and Max
 sliderMin = 1;
@@ -99,41 +102,6 @@ set(handles.slider1,'Max',sliderMax);
 set(handles.slider1,'SliderStep',[1/(sliderMax-sliderMin) 1/(sliderMax-sliderMin)]);
 
 
-
-
-handles.hTOP  = fcnSETFIG([0.00 0.90 1.00 0.10]);
-handles.hPFD  = fcnSETFIG([0.50 0.45 0.25 0.45]);
-handles.hATT  = fcnSETFIG([0.55 0.53 0.15 0.27]);
-handles.hSPD  = fcnSETFIG([0.45 0.53 0.10 0.27]);
-handles.hALT  = fcnSETFIG([0.70 0.53 0.10 0.27]);
-handles.hPFD2  = fcnSETFIG([0.50 0.45 0.25 0.45]);
-handles.hPFD2.Visible = 'off';
-handles.hSTAT = fcnSETFIG([0.75 0.45 0.25 0.45]);
-handles.hFCTL = fcnSETFIG([0.00 0.00 0.25 0.45]);
-handles.hNAV  = fcnSETFIG([0.50 0.00 0.25 0.45]);
-handles.hENG  = fcnSETFIG([0.25 0.30 0.25 0.15]);
-handles.hELEC = fcnSETFIG([0.25 0.00 0.25 0.30]);
-handles.hGPS  = fcnSETFIG([0.75 0.00 0.25 0.45]);
-handles.hVID  = fcnSETFIG([0.00 0.45 0.50 0.45]);
-
-handles.tTOP  = PlotTOP(handles.hTOP);
-handles.tELEC = PlotELEC(handles.hELEC);
-handles.tFCTL = PlotFCTL(handles.hFCTL);
-handles.tPFD  = PlotPFD(handles.hPFD);
-handles.tPFD2  = PlotPFD2(handles.hPFD2);
-handles.tGPS  = PlotGPS(handles.hGPS,handles.SYNCFMT);
-handles.tGPS.FLTPATH.Color = [1 1 1 0.2];
-
-[handles.SYNCFMT.GPS.X, handles.SYNCFMT.GPS.Y] = mfwdtran(handles.tGPS.mstruct, handles.SYNCFMT.GPS.Lat, handles.SYNCFMT.GPS.Lng);
-
-handles.tENG  = PlotENG(handles.hENG);
-handles.tSPD = PlotSPD(handles.hSPD);
-handles.tALT = PlotALT(handles.hALT);
-handles.tATT = PlotATT(handles.hATT);
-
-fcnTITLE( handles.hFCTL, 'FCTL' )
-fcnTITLE( handles.hENG, 'ENG' )
-fcnTITLE( handles.hELEC, 'ELEC' )
 
 % Choose default command line output for mainGUI
 handles.output = hObject;
@@ -296,8 +264,8 @@ handles.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1);
 handles.tATT.t_roll.String = sprintf('%.1f',handles.SYNCFMT.ATT.Roll(n));
 handles.tATT.t_pitch.String = sprintf('%.1f',handles.SYNCFMT.ATT.Pitch(n));
 %% GPS
-handles.tGPS.POS.XData = handles.SYNCFMT.GPS.X(n);
-handles.tGPS.POS.YData = handles.SYNCFMT.GPS.Y(n);
+% handles.tGPS.POS.XData = handles.SYNCFMT.GPS.X(n);
+% handles.tGPS.POS.YData = handles.SYNCFMT.GPS.Y(n);
 %     PlotNAV(hNAV,handles.SYNCFMT.GPS.Lat,handles.SYNCFMT.GPS.Lng(n))
 
 %% FCTL
