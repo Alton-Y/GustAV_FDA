@@ -1,4 +1,4 @@
-function [  ] = fcnINIT( handles )
+function [ handles ] = fcnINIT( handles )
 %Initialize the figure setup
 %   Detailed explanation goes here
 
@@ -38,5 +38,8 @@ fcnTITLE( handles.hFCTL, 'FCTL' )
 fcnTITLE( handles.hENG, 'ENG' )
 fcnTITLE( handles.hELEC, 'ELEC' )
 
+[handles] = GuiMSG(handles,'READY');
+
+    
 end
 

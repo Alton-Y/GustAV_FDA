@@ -23,7 +23,7 @@ clc
 
 % Edit the above text to modify the response to help mainGUI
 
-% Last Modified by GUIDE v2.5 14-Dec-2016 14:29:54
+% Last Modified by GUIDE v2.5 14-Dec-2016 16:51:47
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -57,8 +57,9 @@ handles.output = hObject;
 hObject.Color = [0,0,0];
 
 % fcnINIT initializes the figures and axes for data display
-fcnINIT( handles )
-return
+handles.MSG = [];                      
+handles = fcnINIT( handles );
+% return
 
 %%
 % Temporary LOADING Script
@@ -538,10 +539,15 @@ pause(1/handles.plotFPS)
 end
 
 % --- Executes on button press in pushbutton2.
-function pushbutton2_Callback(hObject, eventdata, handles)
+function BTN_load_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-handles.CurrentIdx = max(min(round(get(handles.slider1,'Value'))+1,get(handles.slider1,'Max')),get(handles.slider1,'Min'));
-set(handles.slider1,'Value',handles.CurrentIdx);
-updateFcn(hObject, eventdata, handles);
+[FileName,PathName] = uigetfile('*.mat','Select the Ardupilot Log File');
+if FileName ~= 0
+    % if FileName is both non-zero
+    [handles] = GuiMSG(handles,sprintf('LOAD %s',FileName));
+    %update GUI structure
+    guidata(hObject, handles);
+    
+end
