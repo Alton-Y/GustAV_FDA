@@ -13,7 +13,7 @@
 - [ ] ND: numsats, hdop
 - [ ] ND: Wind Direction and Speed
 - [ ] UI: Slide bar enhancements
-- [ ] END: Magenta indicator on ENG for commanded throttle (FMT.TECS.th) when TECS is used
+- [ ] ENG: Magenta indicator on ENG for commanded throttle (FMT.TECS.th) when TECS is used
 - [ ] PFD/STATUS: IMU1/IMU2 used  (NKF4.PI)
 - [ ] PFD: FMT.ATT.DesPitch/roll/yaw flight director
 - [ ] STATUS: Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
