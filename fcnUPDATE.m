@@ -32,10 +32,10 @@ handles.DISP.tPFD2.BARO.String = sprintf('% 3.0f',SYNCFMT.BARO.Alt(n));
 handles.DISP.tPFD.GS.String   = sprintf('% 3.1f',SYNCFMT.GPS.Spd(n));
 
 ModeAbbr = {'MANUAL','CIRCLE','STAB','TRAIN','ACRO','FBWA','FBWB','CRUISE','AUTOTUNE',' ','AUTO','RTL','LOITER',' ',' ','GUIDED'};
-
+try
 handles.DISP.hSPD.YLim = [SYNCFMT.ARSP.Airspeed(n)-5 SYNCFMT.ARSP.Airspeed(n)+5];
 handles.DISP.hALT.YLim = [SYNCFMT.BARO.Alt(n)-25 SYNCFMT.BARO.Alt(n)+25];
-
+end
 % Target Altitude
 try
     if SYNCFMT.TECS.hdem(n) > handles.DISP.hALT.YLim(2)
