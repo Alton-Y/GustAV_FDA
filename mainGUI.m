@@ -59,50 +59,7 @@ hObject.Color = [0,0,0];
 % fcnINIT initializes the figures and axes for data display
 handles.MSG = [];                      
 handles = fcnINIT( handles );
-handles
-% % % % % % return
-% % % % % % 
-% % % % % % %%
-% % % % % % % Temporary LOADING Script
-% % % % % % % Data SETUP
-% % % % % % % basefolder = '/Users/altonyeung/Google Drive/Ryerson UAV/Flights/2016-12-03';
-% % % % % % basefolder = 'C:\Users\GustAV\Google Drive\Ryerson UAV\Flights\2016-12-10';
-% % % % % % INFO.timezone = 0;
-% % % % % % % Pixhawk FMT
-% % % % % % pixhawkpath = sprintf('%s/Pixhawk',basefolder);
-% % % % % % pixhawkfiles = fcnFILELIST(pixhawkpath,'.mat');
-% % % % % % [INFO, FMT] = fcnFMTLOAD(INFO,pixhawkpath,pixhawkfiles(1),16.33);
-% % % % % % [ INFO ] = fcnGETINFO( INFO, FMT );
-% % % % % % % Video
-% % % % % % % vidPath = sprintf('%s/Videos/PICT0002.avi',basefolder);
-% % % % % % % load(strrep(vidPath,'.avi','.mat'));
-% % % % % % % vidObj = VideoReader(sprintf('%s/Videos/PICT0002.AVI',basefolder));
-% % % % % % %%
-% % % % % % handles.plotFPS = 15;
-% % % % % % % MODE 2 - Setup by Pixhawk time
-% % % % % % plotStartDatenum = INFO.flight.startTimeLOCAL(1)-5/86400;
-% % % % % % % % Calculate the playback end datenum
-% % % % % % plotEndDatenum = INFO.flight.endTimeLOCAL(1)+25/86400;
-% % % % % % % % Create array to hold the datenum of each playback frame
-% % % % % % handles.plotDatenumArray = (plotStartDatenum:1/handles.plotFPS/86400:plotEndDatenum)';
-% % % % % % % % Create array to hold video time
-% % % % % % % handles.videoTimeArray = (handles.plotDatenumArray - videoStartDatenum).* 86400;
-% % % % % % % % interp1 FMT to match the frames
-% % % % % % handles.SYNCFMT = fcnSYNCFMT( FMT, handles.plotDatenumArray );
-% % % % % % 
-% % % % % %  
-% % % % % % handles.INFO = INFO;
-% % % % % % handles.FMT = FMT;
-% % % % % % % [handles.SYNCFMT.GPS.X, handles.SYNCFMT.GPS.Y] = mfwdtran(handles.tGPS.mstruct, handles.SYNCFMT.GPS.Lat, handles.SYNCFMT.GPS.Lng);
-% % % % % % 
-% % % % % % % Setting the Slider Min and Max
-% % % % % % sliderMin = 1;
-% % % % % % sliderMax = length(handles.plotDatenumArray);
-% % % % % % set(handles.slider1,'Value',sliderMin);
-% % % % % % set(handles.slider1,'Min',sliderMin);
-% % % % % % set(handles.slider1,'Max',sliderMax);
-% % % % % % set(handles.slider1,'SliderStep',[1/(sliderMax-sliderMin) 1/(sliderMax-sliderMin)]);
-% % % % % % 
+
 
 
 % Choose default command line output for mainGUI
@@ -136,12 +93,12 @@ function slider1_Callback(hObject, eventdata, handles)
 % handles.text2.String = datestr(get(hObject,'Value'),'HH:MM:SS.FFF');
 handles.CurrentIdx = round(get(hObject,'Value'));
 handles.CurrentDatenum = handles.plotDatenumArray(handles.CurrentIdx);
-set(handles.text2,'String',datestr(handles.CurrentDatenum,'HH:MM:SS.FFF'))
+set(handles.text2,'String',datestr(handles.CurrentDatenum,'HH:MM:SS.FFF'));
 % guidata(hObject, handles);
 handles.CurrentIdx
 
 
-updateFcn(handles)
+fcnUPDATE(handles,handles.CurrentIdx);
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
@@ -212,7 +169,7 @@ if FileName ~= 0
     end
     
     sliderUpdate(handles);
-    
+    fcnUPDATE(handles,1)
     %update GUI structure
     guidata(hObject, handles);
     
