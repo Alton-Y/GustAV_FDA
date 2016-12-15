@@ -7,7 +7,7 @@
 
 ##New Ideas
 
-- [ ] PFD: HSI / Compass with MAG and TRK Heading  
+- [ ] PFD: HSI / Compass with MAG and TRK Heading, magenta indicator FMT.NTUN.NavBrg/TargBrg  
 - [ ] PFD: Flight Envelope Limits (Speed, Pitch, Roll)
 - [ ] PFD/STATUS: IMU1/IMU2 used  (NKF4.PI)
 - [ ] PFD: FMT.ATT.DesPitch/roll/yaw flight director
@@ -19,3 +19,4 @@
 - [ ] ENG: Magenta indicator on ENG for commanded throttle (FMT.TECS.th) when TECS is used
 - [ ] VID: Video sync
 - [ ] VID: 3D Model for simulation flight log
+- [ ] GPS: Waypoint distance, bearing (FMT.NTUN.WpDist/TargBrg)
