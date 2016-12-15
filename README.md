@@ -9,7 +9,11 @@
 
 - [x] PFD: HSI / Compass with MAG and TRK Heading 
 - [ ] PFD: HSI magenta indicator FMT.NTUN.NavBrg/TargBrg  
-- [ ] PFD: Flight Envelope Limits (Speed, Pitch, Roll)
+- [ ] PFD: Flight Envelope Limits  
+- ~~Airspeed~~ (ARSPD_FBW_MIN / ARSPD_FBW_MAX)
+- Pitch (LIM_PITCH_MIN / LIM_PITCH_MAX)
+- Roll (LIM_ROLL_CD)
+- V/S (TECS_SINK_MIN / TECS_SINK_MAX)
 - [ ] PFD/STATUS: IMU1/IMU2 used  (NKF4.PI)
 - [ ] PFD: FMT.ATT.DesPitch/roll/yaw flight director
 - [ ] STATUS: Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
