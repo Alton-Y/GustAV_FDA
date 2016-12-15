@@ -53,7 +53,7 @@ function mainGUI_OpeningFcn(hObject, eventdata, handles, varargin)
 % handles    structure with handles and user data (see GUIDATA)
 % varargin   command line arguments to mainGUI (see VARARGIN)
 handles.output = hObject;
-% whitebg('k')
+whitebg(hObject,'k');
 hObject.Color = [0,0,0];
 
 % fcnINIT initializes the figures and axes for data display
