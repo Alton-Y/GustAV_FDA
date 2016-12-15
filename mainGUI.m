@@ -170,6 +170,17 @@ updateFcn(hObject, eventdata, handles);
 pause(1/handles.plotFPS)
 end
 
+function sliderUpdate(handles)
+% Setting the Slider Min and Max
+sliderMin = 1;
+sliderMax = length(handles.plotDatenumArray);
+set(handles.slider1,'Value',sliderMin);
+set(handles.slider1,'Min',sliderMin);
+set(handles.slider1,'Max',sliderMax);
+set(handles.slider1,'SliderStep',[1/(sliderMax-sliderMin) 1/(sliderMax-sliderMin)]);
+
+
+
 % --- Executes on button press in pushbutton2.
 function BTN_load_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
@@ -178,15 +189,34 @@ function BTN_load_Callback(hObject, eventdata, handles)
 [FileName,PathName] = uigetfile('*.mat','Select the Ardupilot Log File');
 if FileName ~= 0
     % if FileName is both non-zero
-    [handles] = GuiMSG(handles,sprintf('LOAD %s',FileName));
+    [handles] = GuiMSG(handles,sprintf('LOADING %s ...',FileName));
     INFO.timezone = 0;
-    [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
-    handles.DATA.INFO = INFO;
-    handles.DATA.FMT = FMT;
+    handles.fps = 15;
+    try
+        [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
+        [INFO] = fcnGETINFO(INFO, FMT);
+        handles.DATA.INFO = INFO;
+        handles.DATA.FMT = FMT;
+        handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
+        handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
+        try
+            [handles] = GuiMSG(handles,'');
+            [handles] = GuiMSG(handles,sprintf('LOAD COMPLETE: %s',FileName));
+            [handles] = GuiMSG(handles,sprintf('FRAME COUNT at %.0f fps: %i',handles.fps,length(handles.plotDatenumArray)));
+            [handles] = GuiMSG(handles,sprintf('LOG END:   %s',datestr(handles.plotDatenumArray(end),'yyyy-mm-dd HH:MM')));
+            [handles] = GuiMSG(handles,sprintf('LOG START: %s',datestr(handles.plotDatenumArray(1),'yyyy-mm-dd HH:MM')));
+            [handles] = GuiMSG(handles,'');
+        end
+    catch
+        [handles] = GuiMSG(handles,sprintf('LOAD ERROR: %s',FileName));
+    end
     
-    
+    sliderUpdate(handles);
     
     %update GUI structure
     guidata(hObject, handles);
     
 end
+
+
+

@@ -7,7 +7,7 @@ try
 catch
     handles.MSG = {message};
 end
-handles.MSG
+
 handles.text_MSG.String = handles.MSG(end:-1:1);
 
 
