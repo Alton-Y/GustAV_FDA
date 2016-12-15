@@ -88,8 +88,11 @@ handles.DISP.tHSI.TRK.XData = [-360 0 360]+TRK;
 handles.DISP.tALT.TGTALTTAPE.XData = [-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
 handles.DISP.tALT.TGTALTTAPE.YData = TGTALT+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0];
 
-
-
+% SPD Protection
+ARSPD_FBW_MAX = handles.DATA.SYNCFMT.PARM.ARSPD_FBW_MAX;
+ARSPD_FBW_MIN = handles.DATA.SYNCFMT.PARM.ARSPD_FBW_MIN;
+handles.DISP.tSPD.SPDPROT.YData = [-999 ARSPD_FBW_MIN ARSPD_FBW_MIN nan ARSPD_FBW_MAX ARSPD_FBW_MAX 999];
+handles.DISP.tSPD.SPDPROT.Color = [1 0 0];
 % Target SPD
 try
     if SYNCFMT.TECS.spdem(n) > handles.DISP.hSPD.YLim(2)

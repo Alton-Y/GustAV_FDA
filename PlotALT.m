@@ -25,7 +25,7 @@ for j = 0:10:300
         'VerticalAlignment','middle','HorizontalAlignment','right');
 end
 
-
+handle.YLim = [-25 +25];
 
 end
 

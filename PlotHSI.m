@@ -4,7 +4,7 @@ function [ tHSI ] = PlotHSI( handle )
 
 hold(handle,'on');
 
-handle.YLim = [-1 1];
+handle.YLim = [0 1];
 handle.XTick = (-90:10:360+90);
 handle.TickLength=[0.05 0];
 handle.XMinorTick = 'off';
@@ -22,7 +22,7 @@ for j = 1:36*3
     else
         fontsize = 10.5;
     end
-    text(handle,j*10-360,0.5,sprintf('%i',j1(j)),'Clipping','on',...
+    text(handle,j*10-360,0.8,sprintf('%i',j1(j)),'Clipping','on',...
         'FontSize',fontsize,...
         'FontName','Agency FB',...
         'VerticalAlignment','top','HorizontalAlignment','center');
@@ -31,7 +31,7 @@ end
 
 
 % TRK Heading Green Diamond
-tHSI.TRK = scatter(handle,[-360 0 360]+0,[0 0 0]+0.6,'g',...
+tHSI.TRK = scatter(handle,[-360 0 360]+0,[0 0 0]+0.9,'g',...
     'Marker','diamond',...
     'SizeData',40,'LineWidth',1);
 
