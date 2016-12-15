@@ -8,7 +8,8 @@
 
 - [ ] PFD: HSI / Compass with MAG and TRK Heading  
 - [ ] ENG: Battery Flow per Minute  
-- [ ] VID: VIDEO  
+- [ ] VID: Video sync
+- [ ] VID: 3D Model for simulation flight log
 - [ ] ND: numsats, hdop
 - [ ] ND: Wind Direction and Speed
 - [ ] UI: Slide bar enhancements
