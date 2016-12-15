@@ -6,13 +6,11 @@ function [ ] = fcnFLTPATH( handles )
 
 handle = handles.DISP.hGPS;
 
-X = handles.DATA.SYNCFMT.GPS.X;
-Y = handles.DATA.SYNCFMT.GPS.Y;
-
+tGPS.FLTPATH = plot(handle,handles.DATA.SYNCFMT.GPS.X,handles.DATA.SYNCFMT.GPS.Y);
+tGPS.FLTPATH.Color = [1 1 1 0.2];
 
 hold(handle,'on')
-handles.DISP.tGPS.FLTPATH.XData = X;
-handles.DISP.tGPS.FLTPATH.YData = Y;
+
 
 % get current limit for later
 mapxlim = handle.XLim;

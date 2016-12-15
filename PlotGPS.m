@@ -9,10 +9,7 @@ mstruct.origin = [Field.TEMAC(2) Field.TEMAC(1) 0];
 mstruct.geoid = referenceEllipsoid('wgs84','meters');
 mstruct = defaultm(mstruct);
 tGPS.mstruct = mstruct;
-% [x,y] = mfwdtran(mstruct, SYNCFMT.GPS.Lat, SYNCFMT.GPS.Lng);
 
-tGPS.FLTPATH = plot(handle,0,0);
-tGPS.FLTPATH.Color = [1 1 1 0.2];
 
 hold(handle,'on')
 % START AND END POINT
@@ -22,7 +19,11 @@ hold(handle,'on')
 tGPS.POS = scatter(handle,0,0,'go','filled');
 tGPS.POS.MarkerFaceAlpha = 0.8;
 
-
+gc = 0.7.*[1,1,1];
+tGPS.FL = plot(handle,0,0,'k--','Color',gc);
+tGPS.RWY = plot(handle,0,0,'k-','Color',gc);
+tGPS.RD = plot(handle,0,0,'k:','Color',gc);
+tGPS.TL = plot(handle,0,0,'k-.','Color',gc);
 
 hold(handle,'off');
 

@@ -163,10 +163,7 @@ handles.DISP.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1
 
 handles.DISP.tATT.t_roll.String = sprintf('%.1f',SYNCFMT.ATT.Roll(n));
 handles.DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
-%% GPS
-handles.DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
-handles.DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
-%     PlotNAV(hNAV,SYNCFMT.GPS.Lat,SYNCFMT.GPS.Lng(n))
+
 
 %% FCTL
 
