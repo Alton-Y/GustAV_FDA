@@ -2,7 +2,7 @@
 #TODOs:
 1. Fix Rudder Deflection Slider to RC Output
 2. HSI / Compass with MAG and TRK Heading
-3. GPS path plot
+3. Battery Flow per Minute
 4. VIDEO
 5. Navigation Display (ND) ex. numsats, hdop
 6. Wind Direction and Speed
@@ -11,3 +11,7 @@
 9. IMU1/IMU2 used  (NKF4.PI)
 10. FMT.ATT.DesPitch/roll/yaw flight director
 11. Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
+12. Flight Envelope Limits (Speed, Pitch, Roll)
+
+#
+1. GPS path plot
