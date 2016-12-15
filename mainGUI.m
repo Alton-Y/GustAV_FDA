@@ -156,6 +156,7 @@ if FileName ~= 0
         handles.DATA.FMT = FMT;
         handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
         handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
+        fcnFLTPATH(handles)
         try
             [handles] = GuiMSG(handles,'');
             [handles] = GuiMSG(handles,sprintf('LOAD COMPLETE: %s',FileName));
