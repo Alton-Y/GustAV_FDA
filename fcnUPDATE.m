@@ -166,7 +166,7 @@ handles.DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
 %% GPS
 handles.DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
 handles.DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
-%     PlotNAV(hNAV,SYNCFMT.GPS.Lat,SYNCFMT.GPS.Lng(n))
+% PlotNAV(hNAV,SYNCFMT.GPS.Lat,SYNCFMT.GPS.Lng(n))
 
 %% FCTL
 
