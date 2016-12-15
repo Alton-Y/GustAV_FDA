@@ -11,3 +11,4 @@
 9. IMU1/IMU2 used  (NKF4.PI)
 10. FMT.ATT.DesPitch/roll/yaw flight director
 11. Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
+12. Slide bar goes off screen, no right arrow
