@@ -1,17 +1,19 @@
 # GustAV_FDA
 #TODOs:
-1. Fix Rudder Deflection Slider to RC Output
-2. HSI / Compass with MAG and TRK Heading
-3. Battery Flow per Minute
-4. VIDEO
-5. Navigation Display (ND) ex. numsats, hdop
-6. Wind Direction and Speed
-7. UI under slide bar
-8. Magenta indicator on ENG for commanded throttle (FMT.TECS.th) when TECS is used
-9. IMU1/IMU2 used  (NKF4.PI)
-10. FMT.ATT.DesPitch/roll/yaw flight director
-11. Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
-12. Flight Envelope Limits (Speed, Pitch, Roll)
+#Fixes
+- [ ] FCTL: Rudder Deflection Slider to RC Output  
+- [x] GPS: GPS path plot
 
-#
-1. GPS path plot
+#New Ideas
+
+- [ ] PFD: HSI / Compass with MAG and TRK Heading  
+- [ ] ENG: Battery Flow per Minute  
+- [ ] VID: VIDEO  
+- [ ] ND: numsats, hdop
+- [ ] ND: Wind Direction and Speed
+- [ ] UI: Slide bar enhancements
+- [ ] END: Magenta indicator on ENG for commanded throttle (FMT.TECS.th) when TECS is used
+- [ ] PFD/STATUS: IMU1/IMU2 used  (NKF4.PI)
+- [ ] PFD: FMT.ATT.DesPitch/roll/yaw flight director
+- [ ] STATUS: Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
+- [ ] PFD: Flight Envelope Limits (Speed, Pitch, Roll)
