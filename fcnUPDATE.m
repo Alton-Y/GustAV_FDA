@@ -71,6 +71,17 @@ end
 handles.DISP.tVSI.GREENLINE.YData = [0 VSIsign*(abs(VSI)^pwr)];
 
 
+% HSI Heading Indicator
+MAG = SYNCFMT.ATT.Yaw(n);
+TRK = SYNCFMT.GPS.GCrs(n);
+% Avoid TRK flickering, if GS < 1m/s, TRK = MAG
+if SYNCFMT.GPS.Spd(n) < 1
+    TRK = MAG;
+end
+% MAG Heading
+handles.DISP.hHSI.XLim = [MAG-24 MAG+24];
+% TRK Heading
+handles.DISP.tHSI.TRK.XData = [-360 0 360]+TRK;
 
 
 % Plot Target Altitude on ALT TAPE
