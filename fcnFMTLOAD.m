@@ -1,8 +1,8 @@
-function [INFO, FMT] = fcnFMTLOAD(INFO,pixhawkpath,pixhawkfiles,leapOffset)
+function [INFO, FMT] = fcnFMTLOAD(INFO,pixhawkpath,filename,leapOffset)
 % This funciton loads the raw .mat files from the pixhawk into the
 %corresponding formatted .mat files.
-filename = pixhawkfiles{1};
-load(strcat(pixhawkpath,'/',filename));
+% filename = pixhawkfiles;
+load(strcat(pixhawkpath,filename));
 varList = Seen;
 
 % leapOffset = 16;%.178;
