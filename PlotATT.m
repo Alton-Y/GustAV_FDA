@@ -17,9 +17,9 @@ tATT.GND = fill(handle,[-10 -10 10 10],[0 -10 -10 0],[174 86 124]./255);
 % Pitch lines
 tATT.LINE = plot(handle,nan,nan,'k-');
 
-% White Crosshair
-plot(handle,[-0.1 0.1],[0 0],'w-','LineWidth',2);
-plot(handle,[0 0],[0 0.1],'w-','LineWidth',2);
+% % White Crosshair
+% plot(handle,[-0.1 0.1],[0 0],'w-','LineWidth',2);
+% plot(handle,[0 0],[0 0.1],'w-','LineWidth',2);
 
 
 

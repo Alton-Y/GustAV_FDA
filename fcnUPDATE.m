@@ -26,6 +26,28 @@ handles.DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pi
 
 
 %% PFD
+% FD - Flight Director (center: 25,-23.5)
+if SYNCFMT.MODE.ModeNum(n) > 0
+% FD ROLL
+DesRoll = handles.DATA.SYNCFMT.ATT.DesRoll(n);
+Roll = handles.DATA.SYNCFMT.ATT.Roll(n);
+FDROLL = min(max(DesRoll - Roll,-35),35);
+% FD PITCH
+DesPitch = handles.DATA.SYNCFMT.ATT.DesPitch(n);
+Pitch = handles.DATA.SYNCFMT.ATT.Pitch(n);
+FDPITCH = min(max(DesPitch - Pitch,-35),35);
+else
+    FDROLL = nan;
+    FDPITCH = nan;
+end
+FDSCALE = 5;
+handles.DISP.tPFD2.FDROLL.XData = [FDROLL FDROLL]./FDSCALE+25;
+handles.DISP.tPFD2.FDPITCH.YData = (-23.5+[FDPITCH FDPITCH]./FDSCALE);
+% tPFD2.FDROLL  = plot(handle,[25 25],-[17 31],'-m','LineWidth',2);
+% tPFD2.FDPITCH = plot(handle,[17 33],-[24 24],'-m','LineWidth',2);
+% 
+
+
 % Set String to ARSP
 handles.DISP.tPFD2.ARSP.String = sprintf('% 3.1f',SYNCFMT.ARSP.Airspeed(n));
 handles.DISP.tPFD2.BARO.String = sprintf('% 3.0f',SYNCFMT.BARO.Alt(n));
