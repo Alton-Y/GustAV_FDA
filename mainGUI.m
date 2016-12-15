@@ -1,5 +1,6 @@
 function varargout = mainGUI(varargin)
 clc
+
 % MAINGUI MATLAB code for mainGUI.fig
 %      MAINGUI, by itself, creates a new MAINGUI or raises the existing
 %      singleton*.

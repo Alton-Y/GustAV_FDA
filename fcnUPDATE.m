@@ -27,7 +27,14 @@ handles.DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pi
 
 %% PFD
 % FD - Flight Director (center: 25,-23.5)
-if SYNCFMT.MODE.ModeNum(n) > 0
+
+try
+    mode = SYNCFMT.MODE.ModeNum(n);
+catch
+    mode = 0
+end
+
+if mode > 0
 % FD ROLL
 DesRoll = handles.DATA.SYNCFMT.ATT.DesRoll(n);
 Roll = handles.DATA.SYNCFMT.ATT.Roll(n);
