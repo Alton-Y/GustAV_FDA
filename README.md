@@ -1,10 +1,10 @@
 # GustAV_FDA
 #TODOs:
-#Fixes
+##Fixes
 - [ ] FCTL: Rudder Deflection Slider to RC Output  
 - [x] GPS: GPS path plot
 
-#New Ideas
+##New Ideas
 
 - [ ] PFD: HSI / Compass with MAG and TRK Heading  
 - [ ] ENG: Battery Flow per Minute  
