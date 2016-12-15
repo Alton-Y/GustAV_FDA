@@ -1,13 +1,13 @@
-function [ ] = fcnFLTPATH( handles )
+function [ handles ] = fcnFLTPATH( handles )
 %DRAWFLTPATH Summary of this function goes here
 %   Detailed explanation goes here
 
-% tGPS.FLTPATH = plot(handle,0,0);
+
 
 handle = handles.DISP.hGPS;
 
-tGPS.FLTPATH = plot(handle,handles.DATA.SYNCFMT.GPS.X,handles.DATA.SYNCFMT.GPS.Y);
-tGPS.FLTPATH.Color = [1 1 1 0.2];
+handles.DISP.tGPS.FLTPATH = plot(handle,handles.DATA.SYNCFMT.GPS.X,handles.DATA.SYNCFMT.GPS.Y);
+handles.DISP.tGPS.FLTPATH.Color = [1 1 1 0.2];
 
 hold(handle,'on')
 
@@ -15,6 +15,13 @@ hold(handle,'on')
 % get current limit for later
 mapxlim = handle.XLim;
 mapylim = handle.YLim;
+
+
+
+handles.DISP.tGPS.POS = scatter(handle,0,0,'go','filled');
+handles.DISP.tGPS.POS.MarkerFaceAlpha = 0.8;
+
+
 
 %
 % gray color
@@ -49,6 +56,7 @@ handle.XTick = '';
 
 
 hold(handle,'off')
+
 
 end
 
