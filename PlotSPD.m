@@ -6,7 +6,7 @@ tSPD.TGTSPDTAPE = plot(handle,[-1 0.45],[nan nan],'-m',...
     'LineWidth',2);
 
 handle.XLim = [-1 0.45];
-handle.YTick = [0:1:50];
+handle.YTick = [0:2:50];
 handle.TickLength=[0.05 0];
 handle.YMinorTick = 'on';
 handle.XTick = [];

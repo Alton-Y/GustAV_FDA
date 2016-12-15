@@ -59,6 +59,20 @@ catch
     TGTALT = nan;
 end
 
+
+% VSI Green Line
+pwr = 1/2.2;
+VSI = -SYNCFMT.GPS.VZ(n);
+if VSI<0
+    VSIsign = -1;
+else
+    VSIsign = 1;
+end
+handles.DISP.tVSI.GREENLINE.YData = [0 VSIsign*(abs(VSI)^pwr)];
+
+
+
+
 % Plot Target Altitude on ALT TAPE
 handles.DISP.tALT.TGTALTTAPE.XData = [-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
 handles.DISP.tALT.TGTALTTAPE.YData = TGTALT+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0];
