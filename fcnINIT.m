@@ -21,15 +21,13 @@ handles.DISP.hELEC = fcnSETFIG([0.25 0.00 0.25 0.30]);
 handles.DISP.hGPS  = fcnSETFIG([0.75 0.00 0.25 0.45]);
 handles.DISP.hVID  = fcnSETFIG([0.00 0.45 0.50 0.45]);
 
-% handles.tGPS  = PlotGPS(handles.hGPS,handles.SYNCFMT);
-% handles.tGPS.FLTPATH.Color = [1 1 1 0.2];
 
 handles.DISP.tTOP  = PlotTOP(handles.DISP.hTOP);
 handles.DISP.tELEC = PlotELEC(handles.DISP.hELEC);
 handles.DISP.tFCTL = PlotFCTL(handles.DISP.hFCTL);
 handles.DISP.tPFD  = PlotPFD(handles.DISP.hPFD);
 handles.DISP.tPFD2 = PlotPFD2(handles.DISP.hPFD2);
-
+handles.DISP.tGPS  = PlotGPS(handles.DISP.hGPS);
 handles.DISP.tENG = PlotENG(handles.DISP.hENG);
 handles.DISP.tSPD = PlotSPD(handles.DISP.hSPD);
 handles.DISP.tALT = PlotALT(handles.DISP.hALT);

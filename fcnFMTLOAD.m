@@ -81,6 +81,18 @@ for i = 1:length(varList)
 end
 
 
+% GPS X Y
+load('field');
+mstruct = defaultm('mercator');
+mstruct.origin = [Field.TEMAC(2) Field.TEMAC(1) 0];
+mstruct.geoid = referenceEllipsoid('wgs84','meters');
+mstruct = defaultm(mstruct);
+[FMT.GPS.X,FMT.GPS.Y] = mfwdtran(mstruct,FMT.GPS.Lat,FMT.GPS.Lng);
+
+
+
+
+
 % Writing derived wind direction and speed into FMT.WIND
 try
     FMT.WIND.VWE = FMT.NKF7.VWE;

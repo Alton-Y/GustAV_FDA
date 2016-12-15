@@ -1,7 +1,6 @@
-function [ tGPS ] = PlotGPS( handle, SYNCFMT )
+function [ tGPS ] = PlotGPS( handle )
 %PLOTNAV Summary of this function goes here
 %   Detailed explanation goes here
-tGPS = [];
 
 %% Prep GEO
 load('field');
@@ -10,10 +9,10 @@ mstruct.origin = [Field.TEMAC(2) Field.TEMAC(1) 0];
 mstruct.geoid = referenceEllipsoid('wgs84','meters');
 mstruct = defaultm(mstruct);
 tGPS.mstruct = mstruct;
-[x,y] = mfwdtran(mstruct, SYNCFMT.GPS.Lat, SYNCFMT.GPS.Lng);
+% [x,y] = mfwdtran(mstruct, SYNCFMT.GPS.Lat, SYNCFMT.GPS.Lng);
 
-tGPS.FLTPATH = plot(handle,x,y);
-
+tGPS.FLTPATH = plot(handle,0,0);
+tGPS.FLTPATH.Color = [1 1 1 0.2];
 
 hold(handle,'on')
 % START AND END POINT
@@ -24,8 +23,8 @@ tGPS.POS = scatter(handle,0,0,'go','filled');
 tGPS.POS.MarkerFaceAlpha = 0.8;
 
 % get current limit for later
-mapxlim = handle.XLim;
-mapylim = handle.YLim;
+% mapxlim = handle.XLim;
+% mapylim = handle.YLim;
 
 %
 % gray color
@@ -41,8 +40,8 @@ plot(handle,RWY_x,RWY_y,'k-','Color',gc);
 plot(handle,RD_x,RD_y,'k:','Color',gc);
 plot(handle,TL_x,TL_y,'k-.','Color',gc);
 
-xlim(handle,mapxlim);
-ylim(handle,mapylim);
+% xlim(handle,mapxlim);
+% ylim(handle,mapylim);
 axis(handle,'equal');
 
 handle.YTick = '';
