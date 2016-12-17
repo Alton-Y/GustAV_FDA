@@ -35,6 +35,7 @@ handles.DISP.tALT = PlotALT(handles.DISP.hALT);
 handles.DISP.tATT = PlotATT(handles.DISP.hATT);
 handles.DISP.tVSI = PlotVSI(handles.DISP.hVSI);
 handles.DISP.tHSI = PlotHSI(handles.DISP.hHSI);
+handles.DISP.tNAV = PlotNAV(handles.DISP.hNAV);
 
 fcnTITLE( handles.DISP.hFCTL, 'FCTL' )
 fcnTITLE( handles.DISP.hENG, 'ENG' )

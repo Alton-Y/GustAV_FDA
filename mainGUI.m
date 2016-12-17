@@ -24,7 +24,7 @@ clc
 
 % Edit the above text to modify the response to help mainGUI
 
-% Last Modified by GUIDE v2.5 14-Dec-2016 16:51:47
+% Last Modified by GUIDE v2.5 17-Dec-2016 16:47:28
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -176,6 +176,26 @@ if FileName ~= 0
     guidata(hObject, handles);
     
 end
+
+
+
+
+
+% --- Executes on button press in BTN_reset.
+function BTN_reset_Callback(hObject, eventdata, handles)
+% hObject    handle to BTN_reset (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+handles.MSG = [];
+[handles] = GuiMSG(handles,'RESET');
+handles.DATA = [];
+handles.DISP = [];
+handles = fcnINIT( handles );
+%update GUI structure
+guidata(hObject, handles);
+    
+
+
 
 
 

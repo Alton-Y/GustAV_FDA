@@ -4,7 +4,7 @@ function [  ] = fcnUPDATE(handles,n)
 FMT = handles.DATA.FMT;
 SYNCFMT = handles.DATA.SYNCFMT;
 INFO = handles.DATA.INFO;
-
+DISP = handles.DISP;
 currentFrameDatenum = handles.plotDatenumArray(n);
 %%% test only, print datestr format of current frame time
 
@@ -17,12 +17,12 @@ else
     airtimeDatestr = '00:00';
 end
 
-handles.DISP.tTOP.UTC.String = datestr(currentFrameDatenum,'HH:MM:SS');
+DISP.tTOP.UTC.String = datestr(currentFrameDatenum,'HH:MM:SS');
 currentFrameDatevec = datevec(currentFrameDatenum);
-handles.DISP.tTOP.EST.String = sprintf('%02.f:%02.f',mod(currentFrameDatevec(4)-5,24),currentFrameDatevec(5));
-handles.DISP.tTOP.AIRTIME.String = airtimeDatestr;
-handles.DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pixhawkstart)*86400);
-% handles.DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.videoTimeArray(handles.CurrentIdx)));
+DISP.tTOP.EST.String = sprintf('%02.f:%02.f',mod(currentFrameDatevec(4)-5,24),currentFrameDatevec(5));
+DISP.tTOP.AIRTIME.String = airtimeDatestr;
+DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pixhawkstart)*86400);
+% DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.videoTimeArray(handles.CurrentIdx)));
 
 
 %% PFD
@@ -31,7 +31,7 @@ handles.DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pi
 try
     mode = SYNCFMT.MODE.ModeNum(n);
 catch
-    mode = 0
+    mode = 0;
 end
 
 if mode > 0
@@ -48,40 +48,40 @@ else
     FDPITCH = nan;
 end
 FDSCALE = 5;
-handles.DISP.tPFD2.FDROLL.XData = [FDROLL FDROLL]./FDSCALE+25;
-handles.DISP.tPFD2.FDPITCH.YData = (-23.5+[FDPITCH FDPITCH]./FDSCALE);
+DISP.tPFD2.FDROLL.XData = [FDROLL FDROLL]./FDSCALE+25;
+DISP.tPFD2.FDPITCH.YData = (-23.5+[FDPITCH FDPITCH]./FDSCALE);
 % tPFD2.FDROLL  = plot(handle,[25 25],-[17 31],'-m','LineWidth',2);
 % tPFD2.FDPITCH = plot(handle,[17 33],-[24 24],'-m','LineWidth',2);
 % 
 
 
 % Set String to ARSP
-handles.DISP.tPFD2.ARSP.String = sprintf('% 3.1f',SYNCFMT.ARSP.Airspeed(n));
-handles.DISP.tPFD2.BARO.String = sprintf('% 3.0f',SYNCFMT.BARO.Alt(n));
-handles.DISP.tPFD.GS.String   = sprintf('% 3.1f',SYNCFMT.GPS.Spd(n));
+DISP.tPFD2.ARSP.String = sprintf('% 3.1f',SYNCFMT.ARSP.Airspeed(n));
+DISP.tPFD2.BARO.String = sprintf('% 3.0f',SYNCFMT.BARO.Alt(n));
+DISP.tPFD.GS.String   = sprintf('% 3.1f',SYNCFMT.GPS.Spd(n));
 
 ModeAbbr = {'MANUAL','CIRCLE','STAB','TRAIN','ACRO','FBWA','FBWB','CRUISE','AUTOTUNE',' ','AUTO','RTL','LOITER',' ',' ','GUIDED'};
 try
-handles.DISP.hSPD.YLim = [SYNCFMT.ARSP.Airspeed(n)-5 SYNCFMT.ARSP.Airspeed(n)+5];
-handles.DISP.hALT.YLim = [SYNCFMT.BARO.Alt(n)-25 SYNCFMT.BARO.Alt(n)+25];
+DISP.hSPD.YLim = [SYNCFMT.ARSP.Airspeed(n)-5 SYNCFMT.ARSP.Airspeed(n)+5];
+DISP.hALT.YLim = [SYNCFMT.BARO.Alt(n)-25 SYNCFMT.BARO.Alt(n)+25];
 end
 % Target Altitude
 try
-    if SYNCFMT.TECS.hdem(n) > handles.DISP.hALT.YLim(2)
-        TGTALT = handles.DISP.hALT.YLim(2);
-    elseif SYNCFMT.TECS.hdem(n) < handles.DISP.hALT.YLim(1)
-        TGTALT = handles.DISP.hALT.YLim(1);
+    if SYNCFMT.TECS.hdem(n) > DISP.hALT.YLim(2)
+        TGTALT = DISP.hALT.YLim(2);
+    elseif SYNCFMT.TECS.hdem(n) < DISP.hALT.YLim(1)
+        TGTALT = DISP.hALT.YLim(1);
     else
         TGTALT = SYNCFMT.TECS.hdem(n);
     end
     
     % Write String Target ALT
     if isnan(SYNCFMT.TECS.hdem(n)) ~= 1
-        handles.DISP.tPFD.TGTALTTXT.String = sprintf('% 3.0f',SYNCFMT.TECS.hdem(n));
-        handles.DISP.tPFD.TGTALTBOX.EdgeColor = 'm';
+        DISP.tPFD.TGTALTTXT.String = sprintf('% 3.0f',SYNCFMT.TECS.hdem(n));
+        DISP.tPFD.TGTALTBOX.EdgeColor = 'm';
     else
-        handles.DISP.tPFD.TGTALTTXT.String = '----';
-        handles.DISP.tPFD.TGTALTBOX.EdgeColor = [0.3 0.3 0.3];
+        DISP.tPFD.TGTALTTXT.String = '----';
+        DISP.tPFD.TGTALTBOX.EdgeColor = [0.3 0.3 0.3];
         TGTALT = -999;
     end
 catch
@@ -97,7 +97,7 @@ if VSI<0
 else
     VSIsign = 1;
 end
-handles.DISP.tVSI.GREENLINE.YData = [0 VSIsign*(abs(VSI)^pwr)];
+DISP.tVSI.GREENLINE.YData = [0 VSIsign*(abs(VSI)^pwr)];
 
 
 % HSI Heading Indicator
@@ -108,41 +108,41 @@ if SYNCFMT.GPS.Spd(n) < 1
     TRK = MAG;
 end
 % MAG Heading
-handles.DISP.hHSI.XLim = [MAG-24 MAG+24];
+DISP.hHSI.XLim = [MAG-24 MAG+24];
 % TRK Heading
-handles.DISP.tHSI.TRK.XData = [-360 0 360]+TRK;
+DISP.tHSI.TRK.XData = [-360 0 360]+TRK;
 
 
 % Plot Target Altitude on ALT TAPE
-handles.DISP.tALT.TGTALTTAPE.XData = [-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
-handles.DISP.tALT.TGTALTTAPE.YData = TGTALT+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0];
+DISP.tALT.TGTALTTAPE.XData = [-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
+DISP.tALT.TGTALTTAPE.YData = TGTALT+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0];
 
 % SPD Protection
 ARSPD_FBW_MAX = handles.DATA.SYNCFMT.PARM.ARSPD_FBW_MAX;
 ARSPD_FBW_MIN = handles.DATA.SYNCFMT.PARM.ARSPD_FBW_MIN;
-handles.DISP.tSPD.SPDPROT.YData = [-999 ARSPD_FBW_MIN ARSPD_FBW_MIN nan ARSPD_FBW_MAX ARSPD_FBW_MAX 999];
-handles.DISP.tSPD.SPDPROT.Color = [1 0 0];
+DISP.tSPD.SPDPROT.YData = [-999 ARSPD_FBW_MIN ARSPD_FBW_MIN nan ARSPD_FBW_MAX ARSPD_FBW_MAX 999];
+DISP.tSPD.SPDPROT.Color = [1 0 0];
 % Target SPD
 try
-    if SYNCFMT.TECS.spdem(n) > handles.DISP.hSPD.YLim(2)
-        TGTSPD = handles.DISP.hSPD.YLim(2);
-    elseif SYNCFMT.TECS.spdem(n) < handles.DISP.hSPD.YLim(1)
-        TGTSPD = handles.DISP.hSPD.YLim(1);
+    if SYNCFMT.TECS.spdem(n) > DISP.hSPD.YLim(2)
+        TGTSPD = DISP.hSPD.YLim(2);
+    elseif SYNCFMT.TECS.spdem(n) < DISP.hSPD.YLim(1)
+        TGTSPD = DISP.hSPD.YLim(1);
     else
         TGTSPD = SYNCFMT.TECS.spdem(n);
     end
     % Write String Target SPD
     if isnan(SYNCFMT.TECS.spdem(n)) ~= 1
-        handles.DISP.tPFD.TGTSPDTXT.String = sprintf('% 3.1f',SYNCFMT.TECS.spdem(n));
-        handles.DISP.tPFD.TGTSPDBOX.EdgeColor = 'm';
+        DISP.tPFD.TGTSPDTXT.String = sprintf('% 3.1f',SYNCFMT.TECS.spdem(n));
+        DISP.tPFD.TGTSPDBOX.EdgeColor = 'm';
     else
-        handles.DISP.tPFD.TGTSPDTXT.String = '---';
-        handles.DISP.tPFD.TGTSPDBOX.EdgeColor = [0.3 0.3 0.3];
+        DISP.tPFD.TGTSPDTXT.String = '---';
+        DISP.tPFD.TGTSPDBOX.EdgeColor = [0.3 0.3 0.3];
         TGTSPD = -999;
     end
     % Plot Target Altitude on ALT TAPE
-    handles.DISP.tSPD.TGTSPDTAPE.XData = -[-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
-    handles.DISP.tSPD.TGTSPDTAPE.YData = TGTSPD+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0]./5;
+    DISP.tSPD.TGTSPDTAPE.XData = -[-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
+    DISP.tSPD.TGTSPDTAPE.YData = TGTSPD+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0]./5;
 catch
     TGTSPD = nan;
 end
@@ -150,13 +150,13 @@ end
 
 try
     if isnan(SYNCFMT.MODE.ModeNum(n)) == 1
-        handles.DISP.tPFD.MODE.String = 'MANUAL';
-        handles.DISP.tPFD.MODE.FontSize = 18;
-        handles.DISP.tPFD.MODE.Margin = 4;
+        DISP.tPFD.MODE.String = 'MANUAL';
+        DISP.tPFD.MODE.FontSize = 18;
+        DISP.tPFD.MODE.Margin = 4;
     elseif SYNCFMT.MODE.ModeNum(n) ~= 8
-        handles.DISP.tPFD.MODE.String = ModeAbbr{SYNCFMT.MODE.ModeNum(n)+1};
-        handles.DISP.tPFD.MODE.FontSize = 18;
-        handles.DISP.tPFD.MODE.Margin = 4;
+        DISP.tPFD.MODE.String = ModeAbbr{SYNCFMT.MODE.ModeNum(n)+1};
+        DISP.tPFD.MODE.FontSize = 18;
+        DISP.tPFD.MODE.Margin = 4;
     else
         if SYNCFMT.ATRP.Type(n) == 0
             autotuneMode = 'ROLL';
@@ -165,14 +165,14 @@ try
         else
             autotuneMode = '';
         end
-        handles.DISP.tPFD.MODE.String = sprintf('AUTOTUNE\n%s',autotuneMode);
-        handles.DISP.tPFD.MODE.FontSize = 12;
-        handles.DISP.tPFD.MODE.Margin = 3;
+        DISP.tPFD.MODE.String = sprintf('AUTOTUNE\n%s',autotuneMode);
+        DISP.tPFD.MODE.FontSize = 12;
+        DISP.tPFD.MODE.Margin = 3;
     end
 catch
-    handles.DISP.tPFD.MODE.String = 'MANUAL';
-    handles.DISP.tPFD.MODE.FontSize = 18;
-    handles.DISP.tPFD.MODE.Margin = 4;
+    DISP.tPFD.MODE.String = 'MANUAL';
+    DISP.tPFD.MODE.FontSize = 18;
+    DISP.tPFD.MODE.Margin = 4;
 end
 
 
@@ -197,19 +197,45 @@ line_th = line_th + deg2rad(SYNCFMT.ATT.Roll(n));
 [line_x,line_y] = pol2cart(line_th,line_r);
 line_y = line_y + SYNCFMT.ATT.Pitch(n)*pitch_scale;
 
-handles.DISP.tATT.SKY.XData = sky_x(1,:);
-handles.DISP.tATT.SKY.YData = sky_y(1,:);
-handles.DISP.tATT.GND.XData = sky_x(2,:);
-handles.DISP.tATT.GND.YData = sky_y(2,:);
-handles.DISP.tATT.LINE.XData = reshape([line_x,nan(length(line_x(:,1)),1)]',[],1);
-handles.DISP.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1);
+DISP.tATT.SKY.XData = sky_x(1,:);
+DISP.tATT.SKY.YData = sky_y(1,:);
+DISP.tATT.GND.XData = sky_x(2,:);
+DISP.tATT.GND.YData = sky_y(2,:);
+DISP.tATT.LINE.XData = reshape([line_x,nan(length(line_x(:,1)),1)]',[],1);
+DISP.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1);
 
-handles.DISP.tATT.t_roll.String = sprintf('%.1f',SYNCFMT.ATT.Roll(n));
-handles.DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
-%% GPS
-handles.DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
-handles.DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
-% PlotNAV(hNAV,SYNCFMT.GPS.Lat,SYNCFMT.GPS.Lng(n))
+DISP.tATT.t_roll.String = sprintf('%.1f',SYNCFMT.ATT.Roll(n));
+DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
+%%% GPS
+DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
+DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
+
+
+%% NAV
+% % % tNAV = DISP.tNAV;
+% % % MAG = SYNCFMT.ATT.Yaw(n);
+% % % textBearing = [0:10:350]+(MAG);
+% % % angMark = [2*pi:-2*pi/72:0]'-deg2rad(MAG);
+% % % 
+% % % % X Y for Markers
+% % % markX = tNAV.X0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Xscale.*sin(angMark),1,3))';
+% % % markY = tNAV.Y0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Yscale.*cos(angMark),1,3))';
+% % % 
+% % % tNAV.MARKER.XData = markX(:);
+% % % tNAV.MARKER.YData = markY(:);
+% % % 
+% % % 
+% % % % X Y for Heading Text
+% % % textX = tNAV.X0+tNAV.textRad*tNAV.Xscale*sin(angMark);
+% % % textY = tNAV.Y0+tNAV.textRad*tNAV.Yscale*cos(angMark);
+% % % for n = 1:36
+% % %     tNAV.HDGTEXT(n).Position(1) = textX(n*2-1);
+% % %     tNAV.HDGTEXT(n).Position(2) = textY(n*2-1);
+% % %     tNAV.HDGTEXT(n).Rotation = textBearing(n);
+% % % end
+
+
+
 
 %% FCTL
 
@@ -238,33 +264,33 @@ else
 end
 
 % Set String to deflection deg UP/DN
-handles.DISP.tFCTL.ELEVDEF.String = sprintf('% 3.1f^{o} %s',abs(defELEV),signELEV);
-handles.DISP.tFCTL.LAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defLAIL),signLAIL);
-handles.DISP.tFCTL.RAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defRAIL),signRAIL);
+DISP.tFCTL.ELEVDEF.String = sprintf('% 3.1f^{o} %s',abs(defELEV),signELEV);
+DISP.tFCTL.LAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defLAIL),signLAIL);
+DISP.tFCTL.RAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defRAIL),signRAIL);
 
 
 
 % Set String to RC IN RAW
-handles.DISP.tFCTL.AILRAW.String = sprintf('%i',SYNCFMT.RCIN.C1(n));
-handles.DISP.tFCTL.ELERAW.String = sprintf('%i',SYNCFMT.RCIN.C2(n));
-handles.DISP.tFCTL.THRRAW.String = sprintf('%i',SYNCFMT.RCIN.C3(n));
-handles.DISP.tFCTL.RUDRAW.String = sprintf('%i',SYNCFMT.RCIN.C4(n));
+DISP.tFCTL.AILRAW.String = sprintf('%i',SYNCFMT.RCIN.C1(n));
+DISP.tFCTL.ELERAW.String = sprintf('%i',SYNCFMT.RCIN.C2(n));
+DISP.tFCTL.THRRAW.String = sprintf('%i',SYNCFMT.RCIN.C3(n));
+DISP.tFCTL.RUDRAW.String = sprintf('%i',SYNCFMT.RCIN.C4(n));
 
 % Set String to RC IN PERC
 AILPERC = (SYNCFMT.RCIN.C1(n)-1500)/-4;
 ELEPERC = (SYNCFMT.RCIN.C2(n)-1500)/4;
 THRPERC = (SYNCFMT.RCIN.C3(n)-1100)/8;
 RUDPERC = (SYNCFMT.RCIN.C4(n)-1500)/4;
-handles.DISP.tFCTL.AILPERC.String = sprintf('% 4.0f%%',AILPERC);
-handles.DISP.tFCTL.ELEPERC.String = sprintf('% 4.0f%%',ELEPERC);
-handles.DISP.tFCTL.THRPERC.String = sprintf('% 4.0f%%',THRPERC);
-handles.DISP.tFCTL.RUDPERC.String = sprintf('% 4.0f%%',RUDPERC);
+DISP.tFCTL.AILPERC.String = sprintf('% 4.0f%%',AILPERC);
+DISP.tFCTL.ELEPERC.String = sprintf('% 4.0f%%',ELEPERC);
+DISP.tFCTL.THRPERC.String = sprintf('% 4.0f%%',THRPERC);
+DISP.tFCTL.RUDPERC.String = sprintf('% 4.0f%%',RUDPERC);
 
 % Servo Position
 
 % Left Aileron Servo Position  [-7 -15]
-%     handles.DISP.tFCTL.LAILPOS.YData = [defLAIL defLAIL];
-%     handles.DISP.tFCTL.RAILPOS = plot(handle,[43 45],-[11 11],'-g','LineWidth',4);
+%     DISP.tFCTL.LAILPOS.YData = [defLAIL defLAIL];
+%     DISP.tFCTL.RAILPOS = plot(handle,[43 45],-[11 11],'-g','LineWidth',4);
 % Normalize RAIL SERVO DEFLECTION
 if SYNCFMT.RCOU.C5(n)-FMT.PARM.RC5_TRIM > 0
     NORMRAIL = (SYNCFMT.RCOU.C5(n)-FMT.PARM.RC5_TRIM)/(FMT.PARM.RC5_MAX-FMT.PARM.RC5_TRIM);
@@ -272,13 +298,13 @@ else
     NORMRAIL = -(SYNCFMT.RCOU.C5(n)-FMT.PARM.RC5_TRIM)/(FMT.PARM.RC5_MIN-FMT.PARM.RC5_TRIM);
 end
 if abs(NORMRAIL) > 0.9
-    handles.DISP.tFCTL.RAILPOS.Color = 'r';
+    DISP.tFCTL.RAILPOS.Color = 'r';
 elseif abs(NORMRAIL) < 0.1
-    handles.DISP.tFCTL.RAILPOS.Color = [0 0.75 0];
+    DISP.tFCTL.RAILPOS.Color = [0 0.75 0];
 else
-    handles.DISP.tFCTL.RAILPOS.Color = 'g';
+    DISP.tFCTL.RAILPOS.Color = 'g';
 end
-handles.DISP.tFCTL.RAILPOS.YData = -[NORMRAIL NORMRAIL].*8/2-11;
+DISP.tFCTL.RAILPOS.YData = -[NORMRAIL NORMRAIL].*8/2-11;
 
 % Normalize LAIL SERVO DEFLECTION
 if SYNCFMT.RCOU.C7(n)-FMT.PARM.RC7_TRIM > 0
@@ -287,13 +313,13 @@ else
     NORMLAIL = -(SYNCFMT.RCOU.C7(n)-FMT.PARM.RC7_TRIM)/(FMT.PARM.RC7_MIN-FMT.PARM.RC7_TRIM);
 end
 if abs(NORMLAIL) > 0.9
-    handles.DISP.tFCTL.LAILPOS.Color = 'r';
+    DISP.tFCTL.LAILPOS.Color = 'r';
 elseif abs(NORMLAIL) < 0.1
-    handles.DISP.tFCTL.LAILPOS.Color = [0 0.75 0];
+    DISP.tFCTL.LAILPOS.Color = [0 0.75 0];
 else
-    handles.DISP.tFCTL.LAILPOS.Color = 'g';
+    DISP.tFCTL.LAILPOS.Color = 'g';
 end
-handles.DISP.tFCTL.LAILPOS.YData = [NORMLAIL NORMLAIL].*8/2-11;
+DISP.tFCTL.LAILPOS.YData = [NORMLAIL NORMLAIL].*8/2-11;
 
 % Normalize ELEV SERVO DEFLECTION
 if SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM > 0
@@ -302,13 +328,13 @@ else
     NORMELEV = (SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM)/(FMT.PARM.RC2_MIN-FMT.PARM.RC2_TRIM);
 end
 if abs(NORMELEV) > 0.9
-    handles.DISP.tFCTL.ELEVPOS.Color = 'r';
+    DISP.tFCTL.ELEVPOS.Color = 'r';
 elseif abs(NORMELEV) < 0.1
-    handles.DISP.tFCTL.ELEVPOS.Color = [0 0.75 0];
+    DISP.tFCTL.ELEVPOS.Color = [0 0.75 0];
 else
-    handles.DISP.tFCTL.ELEVPOS.Color = 'g';
+    DISP.tFCTL.ELEVPOS.Color = 'g';
 end
-handles.DISP.tFCTL.ELEVPOS.YData = [NORMELEV NORMELEV].*(21-13)./2-17;
+DISP.tFCTL.ELEVPOS.YData = [NORMELEV NORMELEV].*(21-13)./2-17;
 
 % Normalize RUDR SERVO DEFLECTION
 %     if SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM > 0
@@ -318,24 +344,24 @@ handles.DISP.tFCTL.ELEVPOS.YData = [NORMELEV NORMELEV].*(21-13)./2-17;
 %     end
 NORMRUDR = RUDPERC./100;
 if abs(NORMRUDR) > 0.9
-    handles.DISP.tFCTL.RUDRPOS.Color = 'r';
+    DISP.tFCTL.RUDRPOS.Color = 'r';
 elseif abs(NORMRUDR) < 0.1
-    handles.DISP.tFCTL.RUDRPOS.Color = [0 0.75 0];
+    DISP.tFCTL.RUDRPOS.Color = [0 0.75 0];
 else
-    handles.DISP.tFCTL.RUDRPOS.Color = 'g';
+    DISP.tFCTL.RUDRPOS.Color = 'g';
 end
-handles.DISP.tFCTL.RUDRPOS.XData = [NORMRUDR NORMRUDR].*6+25;
+DISP.tFCTL.RUDRPOS.XData = [NORMRUDR NORMRUDR].*6+25;
 
 
 
 % Set RAW STICK POS
 % Left Stick  X: 15.*[0 1]+8   Y: -14.*[0 1 1 0 0]-26
 % Left Stick X (RUDDER)
-handles.DISP.tFCTL.LSCROSS.XData = 15.*(max(min(RUDPERC,100),-100)/200+0.5)+8;
-handles.DISP.tFCTL.LSCROSS.YData = -14.*(-max(min(THRPERC,100),0)/100+1)-26;
+DISP.tFCTL.LSCROSS.XData = 15.*(max(min(RUDPERC,100),-100)/200+0.5)+8;
+DISP.tFCTL.LSCROSS.YData = -14.*(-max(min(THRPERC,100),0)/100+1)-26;
 % Right Stick X: 15.*[0 1]+27  Y: -14.*[0 1 1 0 0]-26
-handles.DISP.tFCTL.RSCROSS.XData = 15.*(max(min(AILPERC,100),-100)/200+0.5)+27;
-handles.DISP.tFCTL.RSCROSS.YData = -14.*(max(min(-ELEPERC,100),-100)/200+0.5)-26;
+DISP.tFCTL.RSCROSS.XData = 15.*(max(min(AILPERC,100),-100)/200+0.5)+27;
+DISP.tFCTL.RSCROSS.YData = -14.*(max(min(-ELEPERC,100),-100)/200+0.5)-26;
 
 try
     currentMode = SYNCFMT.MODE.ModeNum(n);
@@ -344,11 +370,11 @@ catch
 end
 
 if isnan(currentMode) == 1 || currentMode == 0
-    handles.DISP.tFCTL.LSCROSS.CData = [0 1 0];
-    handles.DISP.tFCTL.RSCROSS.CData = [0 1 0];
+    DISP.tFCTL.LSCROSS.CData = [0 1 0];
+    DISP.tFCTL.RSCROSS.CData = [0 1 0];
 else
-    handles.DISP.tFCTL.LSCROSS.CData = [1 1 0];
-    handles.DISP.tFCTL.RSCROSS.CData = [1 1 0];
+    DISP.tFCTL.LSCROSS.CData = [1 1 0];
+    DISP.tFCTL.RSCROSS.CData = [1 1 0];
 end
 
 %% ENG
@@ -356,9 +382,9 @@ end
 % Calculate THR %
 THROUTPERC = max((SYNCFMT.RCOU.C3(n)-1100)/8,0);
 
-handles.DISP.tENG.THRPERC.String = sprintf('% 5.1f',THROUTPERC);
+DISP.tENG.THRPERC.String = sprintf('% 5.1f',THROUTPERC);
 
-handles.DISP.tENG.BATUSED.String = sprintf('% 5.0f',SYNCFMT.CURR.CurrTot(n));
+DISP.tENG.BATUSED.String = sprintf('% 5.0f',SYNCFMT.CURR.CurrTot(n));
 
 scale = 6;
 a = scale*1.0;
@@ -370,56 +396,56 @@ OY = -8.5;
 angRing = s.*pi.*[1:-2/f:(1-THROUTPERC/100),(1-THROUTPERC/100)];
 
 % Ring Background
-handles.DISP.tENG.THRRING.XData = [0 a*cos(angRing);]+OX;
-handles.DISP.tENG.THRRING.YData = [0 a*sin(angRing);]+OY;
+DISP.tENG.THRRING.XData = [0 a*cos(angRing);]+OX;
+DISP.tENG.THRRING.YData = [0 a*sin(angRing);]+OY;
 % Green Line
-handles.DISP.tENG.THRLINE.XData = OX+[0 a*cos(s*pi*(1-THROUTPERC/100))];
-handles.DISP.tENG.THRLINE.YData = OY+[0 a*sin(s*pi*(1-THROUTPERC/100))];
-handles.DISP.tENG.THRLINE.Color = [0 1 0];
+DISP.tENG.THRLINE.XData = OX+[0 a*cos(s*pi*(1-THROUTPERC/100))];
+DISP.tENG.THRLINE.YData = OY+[0 a*sin(s*pi*(1-THROUTPERC/100))];
+DISP.tENG.THRLINE.Color = [0 1 0];
 % Blue Dot
-handles.DISP.tENG.BLUEDOT.XData = OX+(a+0.5)*cos(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
-handles.DISP.tENG.BLUEDOT.YData = OY+(a+0.5)*sin(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
+DISP.tENG.BLUEDOT.XData = OX+(a+0.5)*cos(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
+DISP.tENG.BLUEDOT.YData = OY+(a+0.5)*sin(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
 
 %% ELEC
 
-handles.DISP.tELEC.BAT1V.String = sprintf('% 3.1f  V',SYNCFMT.CURR.Volt(n));
-handles.DISP.tELEC.BAT1A.String = sprintf('% 3.1f  A',SYNCFMT.CURR.Curr(n));
-handles.DISP.tELEC.BAT2V.String = sprintf('% 3.1f  V',SYNCFMT.CUR2.Volt(n));
-handles.DISP.tELEC.BAT2A.String = sprintf('% 3.1f  A',SYNCFMT.CUR2.Curr(n));
+DISP.tELEC.BAT1V.String = sprintf('% 3.1f  V',SYNCFMT.CURR.Volt(n));
+DISP.tELEC.BAT1A.String = sprintf('% 3.1f  A',SYNCFMT.CURR.Curr(n));
+DISP.tELEC.BAT2V.String = sprintf('% 3.1f  V',SYNCFMT.CUR2.Volt(n));
+DISP.tELEC.BAT2A.String = sprintf('% 3.1f  A',SYNCFMT.CUR2.Curr(n));
 if SYNCFMT.STAT.Armed(n) == 1
     % Motor is ON
-    set(handles.DISP.tELEC.BAT1ARW,'Color','g');
-    set(handles.DISP.tELEC.MOTOR,'Color','g');
-    set(handles.DISP.tELEC.MOTOROFF,'Visible','on');
-    set(handles.DISP.tELEC.MOTORON,'Visible','on');
-    set(handles.DISP.tELEC.MOTOROFF,'Visible','off');
+    set(DISP.tELEC.BAT1ARW,'Color','g');
+    set(DISP.tELEC.MOTOR,'Color','g');
+    set(DISP.tELEC.MOTOROFF,'Visible','on');
+    set(DISP.tELEC.MOTORON,'Visible','on');
+    set(DISP.tELEC.MOTOROFF,'Visible','off');
 elseif SYNCFMT.STAT.Armed(n) == 0
     % Motor is OFF
-    set(handles.DISP.tELEC.BAT1ARW,'Color','r');
-    set(handles.DISP.tELEC.MOTOR,'Color','r');
-    set(handles.DISP.tELEC.MOTORON,'Visible','off');
-    set(handles.DISP.tELEC.MOTOROFF,'Visible','on');
+    set(DISP.tELEC.BAT1ARW,'Color','r');
+    set(DISP.tELEC.MOTOR,'Color','r');
+    set(DISP.tELEC.MOTORON,'Visible','off');
+    set(DISP.tELEC.MOTOROFF,'Visible','on');
 else
     % Unknown
-    set(handles.DISP.tELEC.BAT1ARW,'Color',[0.5 0.5 0.5]);
-    set(handles.DISP.tELEC.MOTOR,'Color',[0.5 0.5 0.5]);
-    set(handles.DISP.tELEC.MOTORON,'Visible','off');
-    set(handles.DISP.tELEC.MOTOROFF,'Visible','on','Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.BAT1ARW,'Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.MOTOR,'Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.MOTORON,'Visible','off');
+    set(DISP.tELEC.MOTOROFF,'Visible','on','Color',[0.5 0.5 0.5]);
 end
 
 if SYNCFMT.STAT.Safety(n) > 0
     % Motor is ON
-    set(handles.DISP.tELEC.BAT2ARW,'Color','g');
-    set(handles.DISP.tELEC.SERVO,'Color','g');
-    set(handles.DISP.tELEC.SERVOOFF,'Visible','on');
-    set(handles.DISP.tELEC.SERVOON,'Visible','on');
-    set(handles.DISP.tELEC.SERVOOFF,'Visible','off');
+    set(DISP.tELEC.BAT2ARW,'Color','g');
+    set(DISP.tELEC.SERVO,'Color','g');
+    set(DISP.tELEC.SERVOOFF,'Visible','on');
+    set(DISP.tELEC.SERVOON,'Visible','on');
+    set(DISP.tELEC.SERVOOFF,'Visible','off');
 else
     % Unknown
-    set(handles.DISP.tELEC.BAT2ARW,'Color',[0.5 0.5 0.5]);
-    set(handles.DISP.tELEC.SERVO,'Color',[0.5 0.5 0.5]);
-    set(handles.DISP.tELEC.SERVOON,'Visible','off');
-    set(handles.DISP.tELEC.SERVOOFF,'Visible','on','Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.BAT2ARW,'Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.SERVO,'Color',[0.5 0.5 0.5]);
+    set(DISP.tELEC.SERVOON,'Visible','off');
+    set(DISP.tELEC.SERVOOFF,'Visible','on','Color',[0.5 0.5 0.5]);
 end
 
 end
