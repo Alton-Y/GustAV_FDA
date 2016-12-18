@@ -448,5 +448,50 @@ else
     set(DISP.tELEC.SERVOOFF,'Visible','on','Color',[0.5 0.5 0.5]);
 end
 
+
+%% STAT
+if SYNCFMT.NKF4.PI(n) == 0
+    DISP.tSTAT.IMU1.Color = 'g';
+    DISP.tSTAT.IMU2.Color = [0.5 0.5 0.5];
+elseif SYNCFMT.NKF4.PI(n) == 1
+    DISP.tSTAT.IMU1.Color = [0.5 0.5 0.5];
+    DISP.tSTAT.IMU2.Color = 'g';
+else
+    DISP.tSTAT.IMU1.Color = [0.5 0.5 0.5];
+    DISP.tSTAT.IMU2.Color = [0.5 0.5 0.5];
 end
+
+% NKF4 IMU1 HEALTH
+DISP.tSTAT.SV1.String = sprintf('%.2f',SYNCFMT.NKF4.SV(n));
+DISP.tSTAT.SV1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SV(n));
+DISP.tSTAT.SP1.String = sprintf('%.2f',SYNCFMT.NKF4.SP(n));
+DISP.tSTAT.SP1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SP(n));
+DISP.tSTAT.SH1.String = sprintf('%.2f',SYNCFMT.NKF4.SH(n));
+DISP.tSTAT.SH1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SH(n));
+DISP.tSTAT.SM1.String = sprintf('%.2f',SYNCFMT.NKF4.SM(n));  
+DISP.tSTAT.SM1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SM(n));
+DISP.tSTAT.SVT1.String = sprintf('%.2f',SYNCFMT.NKF4.SVT(n));
+DISP.tSTAT.SVT1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SVT(n));
+
+% NKF9 IMU2 HEALTH
+DISP.tSTAT.SV2.String = sprintf('%.2f',SYNCFMT.NKF9.SV(n));
+DISP.tSTAT.SV2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SV(n));
+DISP.tSTAT.SP2.String = sprintf('%.2f',SYNCFMT.NKF9.SP(n));
+DISP.tSTAT.SP2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SP(n));
+DISP.tSTAT.SH2.String = sprintf('%.2f',SYNCFMT.NKF9.SH(n));
+DISP.tSTAT.SH2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SH(n));
+DISP.tSTAT.SM2.String = sprintf('%.2f',SYNCFMT.NKF9.SM(n));  
+DISP.tSTAT.SM2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SM(n));
+DISP.tSTAT.SVT2.String = sprintf('%.2f',SYNCFMT.NKF9.SVT(n));
+DISP.tSTAT.SVT2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SVT(n));
+
+end
+
+
+
+
+
+
+
+
 
