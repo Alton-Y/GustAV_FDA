@@ -4,6 +4,7 @@
 - [ ] FCTL: Rudder Deflection Slider to RC Output  
 - [x] GPS: GPS path plot
 - [ ] Slider goes off screen (no right arrow)
+- [ ] Sort FMT items
 
 ##New Ideas
 
