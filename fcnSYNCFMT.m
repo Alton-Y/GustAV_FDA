@@ -4,7 +4,7 @@ function [ SYNCFMT ] = fcnSYNCFMT( FMT, plotDatenumArray )
 
 
 
-fn = fieldnames(FMT);
+fn = sort(fieldnames(FMT));
 
 SYNCFMT.Seen = FMT.Seen;
 SYNCFMT.PARM = FMT.PARM;

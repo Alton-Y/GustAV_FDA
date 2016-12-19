@@ -452,13 +452,19 @@ end
 %% STAT
 if SYNCFMT.NKF4.PI(n) == 0
     DISP.tSTAT.IMU1.Color = 'g';
+    DISP.tSTAT.IMU1.LineWidth = 1;
     DISP.tSTAT.IMU2.Color = [0.5 0.5 0.5];
+    DISP.tSTAT.IMU2.LineWidth = 0.5;
 elseif SYNCFMT.NKF4.PI(n) == 1
     DISP.tSTAT.IMU1.Color = [0.5 0.5 0.5];
+    DISP.tSTAT.IMU1.LineWidth = 0.5;
     DISP.tSTAT.IMU2.Color = 'g';
+    DISP.tSTAT.IMU2.LineWidth = 1;
 else
     DISP.tSTAT.IMU1.Color = [0.5 0.5 0.5];
     DISP.tSTAT.IMU2.Color = [0.5 0.5 0.5];
+    DISP.tSTAT.IMU1.LineWidth = 0.5;
+    DISP.tSTAT.IMU2.LineWidth = 0.5;
 end
 
 % NKF4 IMU1 HEALTH
