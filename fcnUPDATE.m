@@ -176,6 +176,19 @@ catch
 end
 
 
+% ARSP INOP
+if handles.INOP.ARSP
+    handles.DISP.tPFD2.FAIL.ARSP(1).Visible = 'on';
+    handles.DISP.tPFD2.FAIL.ARSP(2).Visible = 'on';
+    handles.DISP.tPFD2.FAIL.ARSP(3).Visible = 'on';
+    handles.DISP.tPFD2.FAIL.ARSP(4).Visible = 'on';
+else
+    handles.DISP.tPFD2.FAIL.ARSP(1).Visible = 'off';
+    handles.DISP.tPFD2.FAIL.ARSP(2).Visible = 'off';
+    handles.DISP.tPFD2.FAIL.ARSP(3).Visible = 'off';
+    handles.DISP.tPFD2.FAIL.ARSP(4).Visible = 'off';
+end
+
 
 %% ATT
 

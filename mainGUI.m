@@ -151,9 +151,13 @@ if FileName ~= 0
     try
         [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
         [INFO] = fcnGETINFO(INFO, FMT);
+        handles.INOP = fcnINOP(FMT);
         
         %Assign FMT to the main workspace.
         assignin('base','FMT',FMT);
+        
+        %Assign FMT to the main workspace.
+        assignin('base','INOP',handles.INOP);
         
         handles.DATA.INFO = INFO;
         %Assign INFO to the main workspace.
@@ -177,7 +181,7 @@ if FileName ~= 0
             [handles] = GuiMSG(handles,'');
             handles.popupmenu1.Enable = 'on';
             handles.slider1.Enable = 'on';
-            [ handles ] = ALLFAIL( handles, 0 );
+            [handles] = ALLFAIL( handles, 0 );
         end
     catch
         [handles] = GuiMSG(handles,sprintf('LOAD ERROR: %s',FileName));
