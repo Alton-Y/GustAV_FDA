@@ -177,11 +177,13 @@ if FileName ~= 0
             [handles] = GuiMSG(handles,'');
             handles.popupmenu1.Enable = 'on';
             handles.slider1.Enable = 'on';
+            [ handles ] = ALLFAIL( handles, 0 );
         end
     catch
         [handles] = GuiMSG(handles,sprintf('LOAD ERROR: %s',FileName));
         handles.popupmenu1.Enable = 'off';
         handles.slider1.Enable = 'off';
+        [ handles ] = ALLFAIL( handles, 1 );
     end
     
     sliderUpdate(handles);
@@ -236,6 +238,7 @@ handles.DISP = [];
 handles = fcnINIT( handles );
 handles.popupmenu1.Enable = 'off';
 handles.slider1.Enable = 'off';
+[ handles ] = ALLFAIL( handles, 1 );
 %update GUI structure
 guidata(hObject, handles);
     

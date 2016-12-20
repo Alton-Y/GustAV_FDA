@@ -35,14 +35,14 @@ catch
 end
 
 if mode > 0
-% FD ROLL
-DesRoll = handles.DATA.SYNCFMT.ATT.DesRoll(n);
-Roll = handles.DATA.SYNCFMT.ATT.Roll(n);
-FDROLL = min(max(DesRoll - Roll,-35),35);
-% FD PITCH
-DesPitch = handles.DATA.SYNCFMT.ATT.DesPitch(n);
-Pitch = handles.DATA.SYNCFMT.ATT.Pitch(n);
-FDPITCH = min(max(DesPitch - Pitch,-35),35);
+    % FD ROLL
+    DesRoll = handles.DATA.SYNCFMT.ATT.DesRoll(n);
+    Roll = handles.DATA.SYNCFMT.ATT.Roll(n);
+    FDROLL = min(max(DesRoll - Roll,-35),35);
+    % FD PITCH
+    DesPitch = handles.DATA.SYNCFMT.ATT.DesPitch(n);
+    Pitch = handles.DATA.SYNCFMT.ATT.Pitch(n);
+    FDPITCH = min(max(DesPitch - Pitch,-35),35);
 else
     FDROLL = nan;
     FDPITCH = nan;
@@ -52,7 +52,7 @@ DISP.tPFD2.FDROLL.XData = [FDROLL FDROLL]./FDSCALE+25;
 DISP.tPFD2.FDPITCH.YData = (-23.5+[FDPITCH FDPITCH]./FDSCALE);
 % tPFD2.FDROLL  = plot(handle,[25 25],-[17 31],'-m','LineWidth',2);
 % tPFD2.FDPITCH = plot(handle,[17 33],-[24 24],'-m','LineWidth',2);
-% 
+%
 
 
 % Set String to ARSP
@@ -62,8 +62,8 @@ DISP.tPFD.GS.String   = sprintf('% 3.1f',SYNCFMT.GPS.Spd(n));
 
 ModeAbbr = {'MANUAL','CIRCLE','STAB','TRAIN','ACRO','FBWA','FBWB','CRUISE','AUTOTUNE',' ','AUTO','RTL','LOITER',' ',' ','GUIDED'};
 try
-DISP.hSPD.YLim = [SYNCFMT.ARSP.Airspeed(n)-5 SYNCFMT.ARSP.Airspeed(n)+5];
-DISP.hALT.YLim = [SYNCFMT.BARO.Alt(n)-25 SYNCFMT.BARO.Alt(n)+25];
+    DISP.hSPD.YLim = [SYNCFMT.ARSP.Airspeed(n)-5 SYNCFMT.ARSP.Airspeed(n)+5];
+    DISP.hALT.YLim = [SYNCFMT.BARO.Alt(n)-25 SYNCFMT.BARO.Alt(n)+25];
 end
 % Target Altitude
 try
@@ -178,39 +178,45 @@ end
 
 
 %% ATT
-%     PlotATT(hATT,SYNCFMT.ATT.Roll(n),SYNCFMT.ATT.Pitch(n));
-pitch_scale = -1/25;%45;
-x = 10;
-y = 10;
-x2 = 0.5;
-sky_x = [-x -x x x;-x -x x x];
-sky_y = [0 y y 0;0 -y -y 0];
-[sky_th, sky_r] = cart2pol(sky_x,sky_y);
-sky_th = sky_th + deg2rad(SYNCFMT.ATT.Roll(n));
-[sky_x,sky_y] = pol2cart(sky_th,sky_r);
-sky_y = sky_y + SYNCFMT.ATT.Pitch(n)*pitch_scale;
-line_scale = repmat([1;0.5],19,2);
-line_x = repmat([-x2 x2],37,1).*line_scale(1:end-1,:);
-line_y = [-90:5:90;-90:5:90]'.*pitch_scale;
-[line_th, line_r] = cart2pol(line_x,line_y);
-line_th = line_th + deg2rad(SYNCFMT.ATT.Roll(n));
-[line_x,line_y] = pol2cart(line_th,line_r);
-line_y = line_y + SYNCFMT.ATT.Pitch(n)*pitch_scale;
 
-DISP.tATT.SKY.XData = sky_x(1,:);
-DISP.tATT.SKY.YData = sky_y(1,:);
-DISP.tATT.GND.XData = sky_x(2,:);
-DISP.tATT.GND.YData = sky_y(2,:);
-DISP.tATT.LINE.XData = reshape([line_x,nan(length(line_x(:,1)),1)]',[],1);
-DISP.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1);
+    
+    pitch_scale = -1/25;%45;
+    x = 10;
+    y = 10;
+    x2 = 0.5;
+    sky_x = [-x -x x x;-x -x x x];
+    sky_y = [0 y y 0;0 -y -y 0];
+    [sky_th, sky_r] = cart2pol(sky_x,sky_y);
+    sky_th = sky_th + deg2rad(SYNCFMT.ATT.Roll(n));
+    [sky_x,sky_y] = pol2cart(sky_th,sky_r);
+    sky_y = sky_y + SYNCFMT.ATT.Pitch(n)*pitch_scale;
+    line_scale = repmat([1;0.5],19,2);
+    line_x = repmat([-x2 x2],37,1).*line_scale(1:end-1,:);
+    line_y = [-90:5:90;-90:5:90]'.*pitch_scale;
+    [line_th, line_r] = cart2pol(line_x,line_y);
+    line_th = line_th + deg2rad(SYNCFMT.ATT.Roll(n));
+    [line_x,line_y] = pol2cart(line_th,line_r);
+    line_y = line_y + SYNCFMT.ATT.Pitch(n)*pitch_scale;
+    
+    DISP.tATT.SKY.XData = sky_x(1,:);
+    DISP.tATT.SKY.YData = sky_y(1,:);
+    DISP.tATT.GND.XData = sky_x(2,:);
+    DISP.tATT.GND.YData = sky_y(2,:);
+    DISP.tATT.LINE.XData = reshape([line_x,nan(length(line_x(:,1)),1)]',[],1);
+    DISP.tATT.LINE.YData = reshape([line_y,nan(length(line_y(:,1)),1)]',[],1);
+    
+    DISP.tATT.t_roll.String = sprintf('%.1f',SYNCFMT.ATT.Roll(n));
+    DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
 
-DISP.tATT.t_roll.String = sprintf('%.1f',SYNCFMT.ATT.Roll(n));
-DISP.tATT.t_pitch.String = sprintf('%.1f',SYNCFMT.ATT.Pitch(n));
+
+
+
 %%% GPS
 try
-DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
-DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
+    DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
+    DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
 end
+
 
 
 
@@ -219,15 +225,15 @@ end
 % % MAG = SYNCFMT.ATT.Yaw(n);
 % % textBearing = [0:10:350]+(MAG);
 % % angMark = [2*pi:-2*pi/72:0]'-deg2rad(MAG);
-% % 
+% %
 % % % X Y for Markers
 % % markX = tNAV.X0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Xscale.*sin(angMark),1,3))';
 % % markY = tNAV.Y0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Yscale.*cos(angMark),1,3))';
-% % 
+% %
 % % tNAV.MARKER.XData = markX(:);
 % % tNAV.MARKER.YData = markY(:);
-% % 
-% % 
+% %
+% %
 % % % X Y for Heading Text
 % % textX = tNAV.X0+tNAV.textRad*tNAV.Xscale*sin(angMark);
 % % textY = tNAV.Y0+tNAV.textRad*tNAV.Yscale*cos(angMark);
@@ -477,7 +483,7 @@ DISP.tSTAT.SP1.String = sprintf('%.2f',SYNCFMT.NKF4.SP(n));
 DISP.tSTAT.SP1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SP(n));
 DISP.tSTAT.SH1.String = sprintf('%.2f',SYNCFMT.NKF4.SH(n));
 DISP.tSTAT.SH1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SH(n));
-DISP.tSTAT.SM1.String = sprintf('%.2f',SYNCFMT.NKF4.SM(n));  
+DISP.tSTAT.SM1.String = sprintf('%.2f',SYNCFMT.NKF4.SM(n));
 DISP.tSTAT.SM1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SM(n));
 DISP.tSTAT.SVT1.String = sprintf('%.2f',SYNCFMT.NKF4.SVT(n));
 DISP.tSTAT.SVT1.Color = fcnNKFSTAT(SYNCFMT.NKF4.SVT(n));
@@ -489,7 +495,7 @@ DISP.tSTAT.SP2.String = sprintf('%.2f',SYNCFMT.NKF9.SP(n));
 DISP.tSTAT.SP2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SP(n));
 DISP.tSTAT.SH2.String = sprintf('%.2f',SYNCFMT.NKF9.SH(n));
 DISP.tSTAT.SH2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SH(n));
-DISP.tSTAT.SM2.String = sprintf('%.2f',SYNCFMT.NKF9.SM(n));  
+DISP.tSTAT.SM2.String = sprintf('%.2f',SYNCFMT.NKF9.SM(n));
 DISP.tSTAT.SM2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SM(n));
 DISP.tSTAT.SVT2.String = sprintf('%.2f',SYNCFMT.NKF9.SVT(n));
 DISP.tSTAT.SVT2.Color = fcnNKFSTAT(SYNCFMT.NKF9.SVT(n));
