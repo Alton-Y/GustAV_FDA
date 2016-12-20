@@ -153,11 +153,22 @@ if FileName ~= 0
     try
         [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
         [INFO] = fcnGETINFO(INFO, FMT);
+        
+        %Assign FMT to the main workspace.
+        assignin('base','FMT',FMT);
+        
         handles.DATA.INFO = INFO;
+        %Assign INFO to the main workspace.
+        assignin('base','INFO',INFO);
+        
         handles.DATA.FMT = FMT;
         handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
         handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
         handles = fcnFLTPATH(handles);
+        
+        %Assign INFO to the main workspace.
+        assignin('base','SYNCFMT',handles.DATA.SYNCFMT);
+        
         try
             [handles] = GuiMSG(handles,'');
             [handles] = GuiMSG(handles,sprintf('LOAD COMPLETE: %s',FileName));
