@@ -234,27 +234,24 @@ end
 
 
 %% NAV
-% % tNAV = DISP.tNAV;
-% % MAG = SYNCFMT.ATT.Yaw(n);
-% % textBearing = [0:10:350]+(MAG);
-% % angMark = [2*pi:-2*pi/72:0]'-deg2rad(MAG);
-% %
-% % % X Y for Markers
-% % markX = tNAV.X0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Xscale.*sin(angMark),1,3))';
-% % markY = tNAV.Y0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Yscale.*cos(angMark),1,3))';
-% %
-% % tNAV.MARKER.XData = markX(:);
-% % tNAV.MARKER.YData = markY(:);
-% %
-% %
-% % % X Y for Heading Text
-% % textX = tNAV.X0+tNAV.textRad*tNAV.Xscale*sin(angMark);
-% % textY = tNAV.Y0+tNAV.textRad*tNAV.Yscale*cos(angMark);
-% % for n = 1:36
-% %     tNAV.HDGTEXT(n).Position(1) = textX(n*2-1);
-% %     tNAV.HDGTEXT(n).Position(2) = textY(n*2-1);
-% %     tNAV.HDGTEXT(n).Rotation = textBearing(n);
-% % end
+tNAV = DISP.tNAV;
+MAG = SYNCFMT.ATT.Yaw(n);
+textBearing = [0:10:350]+(MAG);
+angMark = [2*pi:-2*pi/72:0]'-deg2rad(MAG);
+
+% X Y for Markers
+markX = tNAV.X0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Xscale.*sin(angMark),1,3))';
+markY = tNAV.Y0+(repmat([tNAV.outerRad tNAV.innerRad nan],73,1).*repmat(tNAV.Yscale.*cos(angMark),1,3))';
+
+tNAV.MARKER.XData = markX(:);
+tNAV.MARKER.YData = markY(:);
+
+
+% X Y for Heading Text
+textX = tNAV.X0+tNAV.textRad*tNAV.Xscale*sin(angMark);
+textY = tNAV.Y0+tNAV.textRad*tNAV.Yscale*cos(angMark);
+set(tNAV.HDGTEXT,{'Position'},num2cell([textX(1:2:71),textY(1:2:71)],2));
+set(tNAV.HDGTEXT,{'Rotation'},num2cell(textBearing'));
 
 
 
