@@ -3,7 +3,7 @@
 ##Fixes
 - [ ] FCTL: Rudder Deflection Slider to RC Output  
 - [x] GPS: GPS path plot
-- [ ] Slider goes off screen (no right arrow)
+- [x] Slider goes off screen (no right arrow)
 - [x] Sort FMT items
 
 ##New Ideas
@@ -15,9 +15,10 @@
 - Pitch (LIM_PITCH_MIN / LIM_PITCH_MAX)
 - Roll (LIM_ROLL_CD)
 - V/S (TECS_SINK_MIN / TECS_SINK_MAX)
-- [ ] PFD/STATUS: IMU1/IMU2 used  (NKF4.PI)
 - [x] PFD: FMT.ATT.DesPitch/roll/yaw flight director
-- [ ] STATUS: Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
+- [x] PFD: ARSP INOP
+- [x] STATUS: Warning/error display showing when sensor error is over 1 (FMT.NKF4/FMT.NKF9)
+- [x] STATUS: IMU1/IMU2 used  (NKF4.PI)
 - [ ] ND: numsats, hdop
 - [ ] ND: Wind Direction and Speed
 - [ ] UI: Slide bar enhancements
