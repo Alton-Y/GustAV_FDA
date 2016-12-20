@@ -24,7 +24,7 @@ clc
 
 % Edit the above text to modify the response to help mainGUI
 
-% Last Modified by GUIDE v2.5 17-Dec-2016 16:47:28
+% Last Modified by GUIDE v2.5 19-Dec-2016 19:18:08
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -136,6 +136,7 @@ set(handles.slider1,'Value',sliderMin);
 set(handles.slider1,'Min',sliderMin);
 set(handles.slider1,'Max',sliderMax);
 set(handles.slider1,'SliderStep',[1/(sliderMax-sliderMin) 1/(sliderMax-sliderMin)]);
+fcnUPDATE(handles,1);
 
 
 
@@ -185,7 +186,19 @@ if FileName ~= 0
     fcnUPDATE(handles,1)
     %update GUI structure
     guidata(hObject, handles);
+    %Assign FMT to the main workspace.
+    assignin('base','handles',handles);
     
+    
+    % Update popupmenu1
+    fullLogDuration = datestr(INFO.endTimeLOCAL-INFO.startTimeLOCAL,'MM:SS');
+    popupmenuStr = {sprintf('Full (%s)',fullLogDuration)};
+    for flt = 1:length(INFO.flight.durationS)
+        popupmenuStr{flt+1} = sprintf('#%02.f (%s)',flt,...
+            datestr(INFO.flight.durationS(flt)./86400,'MM:SS'));
+    end
+    set(handles.popupmenu1,'Value',1);
+    set(handles.popupmenu1,'String',popupmenuStr);
 end
 
 
@@ -208,5 +221,37 @@ guidata(hObject, handles);
 
 
 
+% --- Executes on selection change in popupmenu1.
+function popupmenu1_Callback(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% % % if hObject.Value == 1
+% % %     handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
+% % % else
+% % %     flt = hObject.Value-1;
+% % %     startTime = handles.DATA.INFO.flight.startTimeLOCAL(flt);
+% % %     endTime = handles.DATA.INFO.flight.endTimeLOCAL(flt);
+% % %     handles.plotDatenumArray = fcnGETFRAMES(startTime,endTime,handles.fps);
+% % % end
+% % % handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
+% % % handles = fcnFLTPATH(handles);
+% % % %Assign INFO to the main workspace.
+% % % assignin('base','SYNCFMT',handles.DATA.SYNCFMT);
+% % % sliderUpdate(handles);
+% % % % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
+% % % %        contents{get(hObject,'Value')} returns selected item from popupmenu1
 
+
+% --- Executes during object creation, after setting all properties.
+function popupmenu1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupmenu1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
