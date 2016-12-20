@@ -3,22 +3,22 @@ function [ handles ] = fcnFLTPATH( handles )
 %   Detailed explanation goes here
 
 
+cla(handles.DISP.hGPS);
 
-handle = handles.DISP.hGPS;
-
-handles.DISP.tGPS.FLTPATH = plot(handle,handles.DATA.SYNCFMT.GPS.X,handles.DATA.SYNCFMT.GPS.Y);
+handles.DISP.tGPS.FLTPATH = plot(handles.DISP.hGPS,handles.DATA.SYNCFMT.GPS.X,handles.DATA.SYNCFMT.GPS.Y);
 handles.DISP.tGPS.FLTPATH.Color = [1 1 1 0.2];
 
-hold(handle,'on')
+hold(handles.DISP.hGPS,'on')
 
 
 % get current limit for later
-mapxlim = handle.XLim;
-mapylim = handle.YLim;
+axis(handles.DISP.hGPS,'equal');
+mapxlim = handles.DISP.hGPS.XLim;
+mapylim = handles.DISP.hGPS.YLim;
 
 
 
-handles.DISP.tGPS.POS = scatter(handle,0,0,'go','filled');
+handles.DISP.tGPS.POS = scatter(handles.DISP.hGPS,0,0,'go','filled');
 handles.DISP.tGPS.POS.MarkerFaceAlpha = 0.8;
 
 
@@ -36,26 +36,26 @@ mstruct = defaultm(mstruct);
 [RWY_x,RWY_y] = mfwdtran(mstruct, Field.Runway(:,2),Field.Runway(:,1));
 [RD_x,RD_y] = mfwdtran(mstruct, Field.Roads(:,2),Field.Roads(:,1));
 [TL_x,TL_y] = mfwdtran(mstruct, Field.Treeline(:,2),Field.Treeline(:,1));
-plot(handle,FL_x,FL_y,'k--','Color',gc);
-plot(handle,RWY_x,RWY_y,'k-','Color',gc);
-plot(handle,RD_x,RD_y,'k:','Color',gc);
-plot(handle,TL_x,TL_y,'k-.','Color',gc);
 
 
 
 
+handles.DISP.tGPS.FL = plot(handles.DISP.hGPS,FL_x,FL_y,'k--','Color',gc);
+handles.DISP.tGPS.RWY = plot(handles.DISP.hGPS,RWY_x,RWY_y,'k-','Color',gc);
+handles.DISP.tGPS.RD = plot(handles.DISP.hGPS,RD_x,RD_y,'k:','Color',gc);
+handles.DISP.tGPS.TL = plot(handles.DISP.hGPS,TL_x,TL_y,'k-.','Color',gc);
 
 
 
-xlim(handle,mapxlim);
-ylim(handle,mapylim);
-axis(handle,'equal');
+xlim(handles.DISP.hGPS,mapxlim);
+ylim(handles.DISP.hGPS,mapylim);
 
-handle.YTick = '';
-handle.XTick = '';
+% 
+handles.DISP.hGPS.YTick = '';
+handles.DISP.hGPS.XTick = '';
 
 
-hold(handle,'off')
+hold(handles.DISP.hGPS,'off');
 
 
 end

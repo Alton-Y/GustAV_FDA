@@ -90,15 +90,11 @@ varargout{1} = handles.output;
 function slider1_Callback(hObject, eventdata, handles)
 % hObject    handle to slider1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% handles.text2.String = datestr(get(hObject,'Value'),'HH:MM:SS.FFF');
 handles.CurrentIdx = round(get(hObject,'Value'));
 handles.CurrentDatenum = handles.plotDatenumArray(handles.CurrentIdx);
-set(handles.text2,'String',datestr(handles.CurrentDatenum,'HH:MM:SS.FFF'));
 % guidata(hObject, handles);
 handles.CurrentIdx
-
-
+set(handles.TXT_Frame,'String',sprintf('%i/%i',handles.CurrentIdx,length(handles.plotDatenumArray)));
 fcnUPDATE(handles,handles.CurrentIdx);
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
@@ -136,6 +132,7 @@ set(handles.slider1,'Value',sliderMin);
 set(handles.slider1,'Min',sliderMin);
 set(handles.slider1,'Max',sliderMax);
 set(handles.slider1,'SliderStep',[1/(sliderMax-sliderMin) 1/(sliderMax-sliderMin)]);
+set(handles.TXT_Frame,'String',sprintf('1/%i',sliderMax));
 fcnUPDATE(handles,1);
 
 
@@ -170,16 +167,21 @@ if FileName ~= 0
         %Assign INFO to the main workspace.
         assignin('base','SYNCFMT',handles.DATA.SYNCFMT);
         
+        handles.TXT_startTime.String = datestr(handles.plotDatenumArray(1),'yy-mm-dd HH:MM:SS');
+        handles.TXT_endTime.String = datestr(handles.plotDatenumArray(end),'yy-mm-dd HH:MM:SS');
+        
         try
             [handles] = GuiMSG(handles,'');
             [handles] = GuiMSG(handles,sprintf('LOAD COMPLETE: %s',FileName));
             [handles] = GuiMSG(handles,sprintf('FRAME COUNT at %.0f fps: %i',handles.fps,length(handles.plotDatenumArray)));
-            [handles] = GuiMSG(handles,sprintf('LOG END:   %s',datestr(handles.plotDatenumArray(end),'yyyy-mm-dd HH:MM')));
-            [handles] = GuiMSG(handles,sprintf('LOG START: %s',datestr(handles.plotDatenumArray(1),'yyyy-mm-dd HH:MM')));
             [handles] = GuiMSG(handles,'');
+            handles.popupmenu1.Enable = 'on';
+            handles.slider1.Enable = 'on';
         end
     catch
         [handles] = GuiMSG(handles,sprintf('LOAD ERROR: %s',FileName));
+        handles.popupmenu1.Enable = 'off';
+        handles.slider1.Enable = 'off';
     end
     
     sliderUpdate(handles);
@@ -192,13 +194,30 @@ if FileName ~= 0
     
     % Update popupmenu1
     fullLogDuration = datestr(INFO.endTimeLOCAL-INFO.startTimeLOCAL,'MM:SS');
+    % [isSeg, startDatenum, endDatenum]
+    segSelect(1,:) = [0 INFO.endTimeLOCAL,INFO.startTimeLOCAL];
     popupmenuStr = {sprintf('Full (%s)',fullLogDuration)};
     for flt = 1:length(INFO.flight.durationS)
         popupmenuStr{flt+1} = sprintf('#%02.f (%s)',flt,...
             datestr(INFO.flight.durationS(flt)./86400,'MM:SS'));
+        segSelect(flt+1,:) = [0 INFO.flight.startTimeLOCAL(flt),INFO.flight.endTimeLOCAL(flt)];
+    end
+    len = length(popupmenuStr)+1;
+    for seg = 1:length(INFO.segment.durationS)
+        if INFO.segment.durationS(seg) > 0
+        popupmenuStr{len} = sprintf('%s (%s)',INFO.segment.modeAbbr{seg},...
+            datestr(INFO.segment.durationS(seg)./86400,'MM:SS'));
+        INFO.segment.durationS(seg);
+        segSelect(len,:) = [1 INFO.segment.startTimeLOCAL(seg),INFO.segment.endTimeLOCAL(seg)];
+        len = len + 1;
+        end
     end
     set(handles.popupmenu1,'Value',1);
     set(handles.popupmenu1,'String',popupmenuStr);
+    
+    handles.segSelect = segSelect;
+    %update GUI structure
+    guidata(hObject, handles);
 end
 
 
@@ -215,6 +234,8 @@ handles.MSG = [];
 handles.DATA = [];
 handles.DISP = [];
 handles = fcnINIT( handles );
+handles.popupmenu1.Enable = 'off';
+handles.slider1.Enable = 'off';
 %update GUI structure
 guidata(hObject, handles);
     
@@ -226,25 +247,25 @@ function popupmenu1_Callback(hObject, eventdata, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-% % % if hObject.Value == 1
-% % %     handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
-% % % else
-% % %     flt = hObject.Value-1;
-% % %     startTime = handles.DATA.INFO.flight.startTimeLOCAL(flt);
-% % %     endTime = handles.DATA.INFO.flight.endTimeLOCAL(flt);
-% % %     handles.plotDatenumArray = fcnGETFRAMES(startTime,endTime,handles.fps);
-% % % end
-% % % handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
-% % % handles = fcnFLTPATH(handles);
-% % % %Assign INFO to the main workspace.
-% % % assignin('base','SYNCFMT',handles.DATA.SYNCFMT);
-% % % sliderUpdate(handles);
+if hObject.Value == 1
+    startTime = handles.DATA.INFO.startTimeLOCAL;
+    endTime = handles.DATA.INFO.endTimeLOCAL;
+else
+    startTime = handles.segSelect(hObject.Value,2)
+    endTime = handles.segSelect(hObject.Value,3)
+    handles = updateRange(handles,startTime,endTime);
+    guidata(hObject, handles);
+end
+handles = updateRange(handles,startTime,endTime);
+guidata(hObject, handles);
+
+
 % % % % Hints: contents = cellstr(get(hObject,'String')) returns popupmenu1 contents as cell array
 % % % %        contents{get(hObject,'Value')} returns selected item from popupmenu1
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, eventdata, handles)
+function popupmenu1_CreateFcn(hObject, ~, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -254,4 +275,17 @@ function popupmenu1_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+function [handles] = updateRange(handles,startTime,endTime)
+handles.plotDatenumArray = fcnGETFRAMES(startTime,endTime,handles.fps);
+handles.TXT_startTime.String = datestr(handles.plotDatenumArray(1),'yy-mm-dd HH:MM:SS');
+handles.TXT_endTime.String = datestr(handles.plotDatenumArray(end),'yy-mm-dd HH:MM:SS');
+handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
+%Assign INFO to the main workspace.
+assignin('base','SYNCFMT',handles.DATA.SYNCFMT);
+handles = fcnFLTPATH(handles);
+sliderUpdate(handles);
+
+
 

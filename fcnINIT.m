@@ -2,10 +2,9 @@ function [ handles ] = fcnINIT( handles )
 %Initialize the figure setup
 %   Detailed explanation goes here
 
-handles.text2.String = 'READY';
 handles.CurrentIdx = 1;
 
-handles.DISP.hTOP  = fcnSETFIG([0.00 0.90 1.00 0.10]);
+handles.DISP.hTOP  = fcnSETFIG([0.00 0.90 0.50 0.10]);
 handles.DISP.hPFD  = fcnSETFIG([0.50 0.45 0.25 0.45]);
 handles.DISP.hATT  = fcnSETFIG([0.55 0.53 0.15 0.27]);
 handles.DISP.hSPD  = fcnSETFIG([0.45 0.53 0.10 0.27]);
@@ -22,7 +21,7 @@ handles.DISP.hELEC = fcnSETFIG([0.25 0.00 0.25 0.30]);
 handles.DISP.hGPS  = fcnSETFIG([0.75 0.00 0.25 0.45]);
 handles.DISP.hVID  = fcnSETFIG([0.00 0.45 0.50 0.45]);
 
-
+handles.DISP.tGPS  = PlotGPS(handles.DISP.hGPS);
 handles.DISP.tTOP  = PlotTOP(handles.DISP.hTOP);
 handles.DISP.tELEC = PlotELEC(handles.DISP.hELEC);
 handles.DISP.tFCTL = PlotFCTL(handles.DISP.hFCTL);
