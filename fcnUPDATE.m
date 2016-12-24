@@ -401,6 +401,14 @@ end
 % Calculate THR %
 THROUTPERC = max((SYNCFMT.RCOU.C3(n)-1100)/8,0);
 
+if isnan(SYNCFMT.TECS.th(n)) == 0
+    THRSELECT = SYNCFMT.TECS.th(n)*100;
+    DISP.tENG.BLUEDOT.CData = [1 0 1];
+else
+    THRSELECT = THROUTPERC;
+    DISP.tENG.BLUEDOT.CData = [0 1 1];
+end
+
 DISP.tENG.THRPERC.String = sprintf('% 5.1f',THROUTPERC);
 
 DISP.tENG.BATUSED.String = sprintf('% 5.0f',SYNCFMT.CURR.CurrTot(n));
@@ -422,8 +430,8 @@ DISP.tENG.THRLINE.XData = OX+[0 a*cos(s*pi*(1-THROUTPERC/100))];
 DISP.tENG.THRLINE.YData = OY+[0 a*sin(s*pi*(1-THROUTPERC/100))];
 DISP.tENG.THRLINE.Color = [0 1 0];
 % Blue Dot
-DISP.tENG.BLUEDOT.XData = OX+(a+0.5)*cos(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
-DISP.tENG.BLUEDOT.YData = OY+(a+0.5)*sin(s*pi*(1-max(min(THRPERC,100.5),-3)/100));
+DISP.tENG.BLUEDOT.XData = OX+(a+0.5)*cos(s*pi*(1-max(min(THRSELECT,100),-3)/100));
+DISP.tENG.BLUEDOT.YData = OY+(a+0.5)*sin(s*pi*(1-max(min(THRSELECT,100),-3)/100));
 
 %% ELEC
 
