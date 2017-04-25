@@ -17,6 +17,9 @@ for n = 1:length(fn)
                 SYNCFMT.(fn{n}).(fn2{j}) = interp1(FMT.(fn{n}).TimeLOCAL,FMT.(fn{n}).(fn2{j}),plotDatenumArray,'previous');
             end
         end
+    catch
+        n
+        fn{n}
     end
 end
 

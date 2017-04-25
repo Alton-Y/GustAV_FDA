@@ -33,9 +33,12 @@ end
 % TRK Heading Green Diamond
 tHSI.TRK = scatter(handle,[-360 0 360]+0,[0 0 0]+0.9,'g',...
     'Marker','diamond',...
-    'SizeData',40,'LineWidth',1);
+    'SizeData',40,'LineWidth',1.5);
 
-
+% TARGET Heading Magenta Cross
+tHSI.TGT = scatter(handle,[-360 0 360]+0,[0 0 0]+0.9,'m',...
+    'Marker','+',...
+    'SizeData',60,'LineWidth',1.5);
 
 hold(handle,'off');
 

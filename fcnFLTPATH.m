@@ -16,7 +16,8 @@ axis(handles.DISP.hGPS,'equal');
 mapxlim = handles.DISP.hGPS.XLim;
 mapylim = handles.DISP.hGPS.YLim;
 
-
+handles.DISP.tGPS.FWD = scatter(handles.DISP.hGPS,0,0,[],1,'wo','filled');
+handles.DISP.tGPS.FWD.MarkerFaceAlpha = 0.5;
 
 handles.DISP.tGPS.POS = scatter(handles.DISP.hGPS,0,0,'go','filled');
 handles.DISP.tGPS.POS.MarkerFaceAlpha = 0.8;

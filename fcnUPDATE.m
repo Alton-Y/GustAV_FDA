@@ -19,7 +19,7 @@ end
 
 DISP.tTOP.UTC.String = datestr(currentFrameDatenum,'HH:MM:SS');
 currentFrameDatevec = datevec(currentFrameDatenum);
-DISP.tTOP.EST.String = sprintf('%02.f:%02.f',mod(currentFrameDatevec(4)-5,24),currentFrameDatevec(5));
+DISP.tTOP.EST.String = sprintf('%02.f:%02.f',mod(currentFrameDatevec(4)-4,24),currentFrameDatevec(5));
 DISP.tTOP.AIRTIME.String = airtimeDatestr;
 DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pixhawkstart)*86400);
 % DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.videoTimeArray(handles.CurrentIdx)));
@@ -111,7 +111,7 @@ end
 DISP.hHSI.XLim = [MAG-24 MAG+24];
 % TRK Heading
 DISP.tHSI.TRK.XData = [-360 0 360]+TRK;
-
+DISP.tHSI.TGT.XData = [-360 0 360]+SYNCFMT.NTUN.TargBrg(n);
 
 % Plot Target Altitude on ALT TAPE
 DISP.tALT.TGTALTTAPE.XData = [-0.42 -0.35 -0.35 -0.45 -0.45 -0.35 -0.35 -0.42 1];
@@ -229,6 +229,14 @@ try
     DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
     DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
 end
+    FWDcount = 50;
+    handles.DISP.tGPS.FWD.SizeData = 5;
+    DISP.tGPS.FWD.XData = SYNCFMT.GPS.X(n:n+FWDcount);
+    DISP.tGPS.FWD.YData = SYNCFMT.GPS.Y(n:n+FWDcount);
+%     DISP.tGPS.SizeData = 1:FWDcount
+    
+%     disp('FWD')
+
 
 
 
@@ -261,7 +269,11 @@ set(tNAV.HDGTEXT,{'Rotation'},num2cell(textBearing'));
 
 % Down is positive
 % If defection is +ve, display DN, else display UP
-defELEV = (SYNCFMT.RCOU.C2(n)-1600)/18.242;
+if currentFrameDatenum > 736808 % new setting
+    defELEV = (SYNCFMT.RCOU.C2(n)-1498)/-22.8571; % new tail setting
+else
+    defELEV = (SYNCFMT.RCOU.C2(n)-1600)/18.242; % old tail setting
+end
 if defELEV > 0
     signELEV = 'DN';
 else
@@ -281,12 +293,19 @@ if defRAIL > 0
 else
     signRAIL = 'UP';
 end
+% If defection is +ve, display DN, else display UP
+defRUDR = (SYNCFMT.RCOU.C4(n)-1500)/-17.22;
+if defRUDR > 0
+    signRUDR = ' R';
+else
+    signRUDR = ' L';
+end
 
 % Set String to deflection deg UP/DN
 DISP.tFCTL.ELEVDEF.String = sprintf('% 3.1f^{o} %s',abs(defELEV),signELEV);
 DISP.tFCTL.LAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defLAIL),signLAIL);
 DISP.tFCTL.RAILDEF.String = sprintf('% 3.1f^{o} %s',abs(defRAIL),signRAIL);
-
+DISP.tFCTL.RUDRDEF.String = sprintf('% 3.1f^{o} %s',abs(defRUDR),signRUDR);
 
 
 % Set String to RC IN RAW
@@ -297,9 +316,13 @@ DISP.tFCTL.RUDRAW.String = sprintf('%i',SYNCFMT.RCIN.C4(n));
 
 % Set String to RC IN PERC
 AILPERC = (SYNCFMT.RCIN.C1(n)-1500)/-4;
-ELEPERC = (SYNCFMT.RCIN.C2(n)-1500)/4;
-THRPERC = (SYNCFMT.RCIN.C3(n)-1100)/8;
-RUDPERC = (SYNCFMT.RCIN.C4(n)-1500)/4;
+if currentFrameDatenum > 736808 
+    ELEPERC = -(SYNCFMT.RCIN.C2(n)-1500)/4/0.8;% new setting
+else
+    ELEPERC = (SYNCFMT.RCIN.C2(n)-1500)/4;% old setting
+end
+THRPERC = min((SYNCFMT.RCIN.C3(n)-1100)/8,100);
+RUDPERC = -(SYNCFMT.RCIN.C4(n)-1500)/4;
 DISP.tFCTL.AILPERC.String = sprintf('% 4.0f%%',AILPERC);
 DISP.tFCTL.ELEPERC.String = sprintf('% 4.0f%%',ELEPERC);
 DISP.tFCTL.THRPERC.String = sprintf('% 4.0f%%',THRPERC);
@@ -341,10 +364,18 @@ end
 DISP.tFCTL.LAILPOS.YData = [NORMLAIL NORMLAIL].*8/2-11;
 
 % Normalize ELEV SERVO DEFLECTION
-if SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM > 0
-    NORMELEV = -(SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM)/(FMT.PARM.RC2_MAX-FMT.PARM.RC2_TRIM);
-else
-    NORMELEV = (SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM)/(FMT.PARM.RC2_MIN-FMT.PARM.RC2_TRIM);
+if currentFrameDatenum > 736808 % new setting
+    if SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM > 0
+        NORMELEV = -(SYNCFMT.RCOU.C2(n)-1500)/(1138-1500);
+    else
+        NORMELEV = (SYNCFMT.RCOU.C2(n)-1500)/(1778-1500);
+    end
+else % old tail setting
+    if SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM > 0
+        NORMELEV = -(SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM)/(FMT.PARM.RC2_MAX-FMT.PARM.RC2_TRIM);
+    else
+        NORMELEV = (SYNCFMT.RCOU.C2(n)-FMT.PARM.RC2_TRIM)/(FMT.PARM.RC2_MIN-FMT.PARM.RC2_TRIM);
+    end
 end
 if abs(NORMELEV) > 0.9
     DISP.tFCTL.ELEVPOS.Color = 'r';
@@ -356,12 +387,12 @@ end
 DISP.tFCTL.ELEVPOS.YData = [NORMELEV NORMELEV].*(21-13)./2-17;
 
 % Normalize RUDR SERVO DEFLECTION
-%     if SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM > 0
-%         NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MAX-FMT.PARM.RC4_TRIM);
-%     else
-%         NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MIN-FMT.PARM.RC4_TRIM);
-%     end
-NORMRUDR = RUDPERC./100;
+if SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM > 0
+    NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MAX-FMT.PARM.RC4_TRIM);
+else
+    NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MIN-FMT.PARM.RC4_TRIM);
+end
+% NORMRUDR = RUDPERC./100;
 if abs(NORMRUDR) > 0.9
     DISP.tFCTL.RUDRPOS.Color = 'r';
 elseif abs(NORMRUDR) < 0.1
@@ -399,12 +430,17 @@ end
 %% ENG
 
 % Calculate THR %
-THROUTPERC = max((SYNCFMT.RCOU.C3(n)-1100)/8,0);
+THROUTPERC = min(max((SYNCFMT.RCOU.C3(n)-1100)/8,0),100);
 
-if isnan(SYNCFMT.TECS.th(n)) == 0
-    THRSELECT = SYNCFMT.TECS.th(n)*100;
-    DISP.tENG.BLUEDOT.CData = [1 0 1];
-else
+try
+    if isnan(SYNCFMT.TECS.th(n)) == 0
+        THRSELECT = SYNCFMT.TECS.th(n)*100;
+        DISP.tENG.BLUEDOT.CData = [1 0 1];
+    else
+        THRSELECT = THROUTPERC;
+        DISP.tENG.BLUEDOT.CData = [0 1 1];
+    end
+catch
     THRSELECT = THROUTPERC;
     DISP.tENG.BLUEDOT.CData = [0 1 1];
 end
