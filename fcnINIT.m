@@ -19,7 +19,8 @@ handles.DISP.hNAV  = fcnSETFIG([0.50 0.00 0.25 0.45]);
 handles.DISP.hENG  = fcnSETFIG([0.25 0.30 0.25 0.15]);
 handles.DISP.hELEC = fcnSETFIG([0.25 0.00 0.25 0.30]);
 handles.DISP.hGPS  = fcnSETFIG([0.75 0.00 0.25 0.45]);
-handles.DISP.hVID  = fcnSETFIG([0.00 0.45 0.50 0.45]);
+handles.DISP.hCAM  = fcnSETFIG([0.00 0.45 0.50 0.45]);
+
 
 handles.DISP.tGPS  = PlotGPS(handles.DISP.hGPS);
 handles.DISP.tTOP  = PlotTOP(handles.DISP.hTOP);
@@ -36,6 +37,7 @@ handles.DISP.tVSI = PlotVSI(handles.DISP.hVSI);
 handles.DISP.tHSI = PlotHSI(handles.DISP.hHSI);
 handles.DISP.tNAV = PlotNAV(handles.DISP.hNAV);
 handles.DISP.tSTAT = PlotSTAT(handles.DISP.hSTAT);
+handles.DISP.tCAM  = PlotCAM(handles.DISP.hCAM);
 
 fcnTITLE( handles.DISP.hFCTL, 'FCTL' )
 fcnTITLE( handles.DISP.hENG, 'ENG' )

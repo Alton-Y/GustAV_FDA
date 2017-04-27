@@ -8,7 +8,6 @@ DISP = handles.DISP;
 currentFrameDatenum = handles.plotDatenumArray(n);
 %%% test only, print datestr format of current frame time
 
-
 %% TOP
 airtimeDatenum = currentFrameDatenum-INFO.flight.startTimeLOCAL(1);
 if airtimeDatenum > 0
@@ -23,6 +22,18 @@ DISP.tTOP.EST.String = sprintf('%02.f:%02.f',mod(currentFrameDatevec(4)-4,24),cu
 DISP.tTOP.AIRTIME.String = airtimeDatestr;
 DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pixhawkstart)*86400);
 % DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.videoTimeArray(handles.CurrentIdx)));
+
+
+%% CAM
+handles.VIDEO.vidObj.CurrentTime = 86400*(currentFrameDatenum-handles.VIDEO.videoStartDatenum);
+DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.VIDEO.vidObj.CurrentTime));
+
+% Read/Update Frame
+vFrame = readFrame(handles.VIDEO.vidObj);
+DISP.tCAM.IMG = imshow(vFrame(1:634,:,:));
+
+
+%  video = readFrame(v);
 
 
 %% PFD
@@ -86,6 +97,8 @@ try
     end
 catch
     TGTALT = nan;
+    DISP.tPFD.TGTALTTXT.String = '----';
+    DISP.tPFD.TGTALTBOX.EdgeColor = [0.3 0.3 0.3];
 end
 
 
@@ -145,6 +158,8 @@ try
     DISP.tSPD.TGTSPDTAPE.YData = TGTSPD+[0    -2    -3.5  -3.5   3.5  3.5 2 0 0]./5;
 catch
     TGTSPD = nan;
+    DISP.tPFD.TGTSPDTXT.String = '---';
+    DISP.tPFD.TGTSPDBOX.EdgeColor = [0.3 0.3 0.3];
 end
 
 
@@ -229,10 +244,12 @@ try
     DISP.tGPS.POS.XData = SYNCFMT.GPS.X(n);
     DISP.tGPS.POS.YData = SYNCFMT.GPS.Y(n);
 end
-    FWDcount = 50;
+try
+    FWDcount = handles.fps*3;
     handles.DISP.tGPS.FWD.SizeData = 5;
     DISP.tGPS.FWD.XData = SYNCFMT.GPS.X(n:n+FWDcount);
     DISP.tGPS.FWD.YData = SYNCFMT.GPS.Y(n:n+FWDcount);
+end
 %     DISP.tGPS.SizeData = 1:FWDcount
     
 %     disp('FWD')
@@ -388,7 +405,7 @@ DISP.tFCTL.ELEVPOS.YData = [NORMELEV NORMELEV].*(21-13)./2-17;
 
 % Normalize RUDR SERVO DEFLECTION
 if SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM > 0
-    NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MAX-FMT.PARM.RC4_TRIM);
+    NORMRUDR = -(SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MAX-FMT.PARM.RC4_TRIM);
 else
     NORMRUDR = (SYNCFMT.RCOU.C4(n)-FMT.PARM.RC4_TRIM)/(FMT.PARM.RC4_MIN-FMT.PARM.RC4_TRIM);
 end
@@ -400,7 +417,9 @@ elseif abs(NORMRUDR) < 0.1
 else
     DISP.tFCTL.RUDRPOS.Color = 'g';
 end
+
 DISP.tFCTL.RUDRPOS.XData = [NORMRUDR NORMRUDR].*6+25;
+
 
 
 

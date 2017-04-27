@@ -47,7 +47,7 @@ end
 
 
 % --- Executes just before mainGUI is made visible.
-function mainGUI_OpeningFcn(hObject, eventdata, handles, varargin)
+function mainGUI_OpeningFcn(hObject, ~, handles, varargin)
 % This function has no output args, see OutputFcn.
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -76,7 +76,7 @@ guidata(hObject, handles);
 
 
 % --- Outputs from this function are returned to the command line.
-function varargout = mainGUI_OutputFcn(hObject, eventdata, handles)
+function varargout = mainGUI_OutputFcn(~, ~, handles)
 % varargout  cell array for returning output args (see VARARGOUT);
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -87,7 +87,7 @@ varargout{1} = handles.output;
 
 
 % --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
+function slider1_Callback(hObject, ~, handles)
 % hObject    handle to slider1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 handles.CurrentIdx = round(get(hObject,'Value'));
@@ -101,7 +101,7 @@ fcnUPDATE(handles,handles.CurrentIdx);
 
 
 % --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
+function slider1_CreateFcn(hObject, ~, ~)
 % hObject    handle to slider1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
@@ -138,7 +138,7 @@ fcnUPDATE(handles,1);
 
 
 % --- Executes on button press in pushbutton2.
-function BTN_load_Callback(hObject, eventdata, handles)
+function BTN_load_Callback(hObject, ~, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -147,7 +147,14 @@ if FileName ~= 0
     % if FileName is both non-zero
     [handles] = GuiMSG(handles,sprintf('LOADING %s ...',FileName));
     INFO.timezone = 0;
-    handles.fps = 15;
+    handles.fps = 30;
+    % LOAD VIDEO
+    try
+        [VIDEO] = fcnVIDEOLOAD();
+        %Assign FMT to the main workspace.
+        assignin('base','VIDEO',VIDEO);
+        handles.VIDEO = VIDEO;
+    end
     try
         [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
         [INFO] = fcnGETINFO(INFO, FMT);
@@ -231,7 +238,7 @@ end
 
 
 % --- Executes on button press in BTN_reset.
-function BTN_reset_Callback(hObject, eventdata, handles)
+function BTN_reset_Callback(hObject, ~, handles)
 % hObject    handle to BTN_reset (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -250,7 +257,7 @@ guidata(hObject, handles);
 
 
 % --- Executes on selection change in popupmenu1.
-function popupmenu1_Callback(hObject, eventdata, handles)
+function popupmenu1_Callback(hObject, ~, handles)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -258,8 +265,8 @@ if hObject.Value == 1
     startTime = handles.DATA.INFO.startTimeLOCAL;
     endTime = handles.DATA.INFO.endTimeLOCAL;
 else
-    startTime = handles.segSelect(hObject.Value,2)
-    endTime = handles.segSelect(hObject.Value,3)
+    startTime = handles.segSelect(hObject.Value,2);
+    endTime = handles.segSelect(hObject.Value,3);
     handles = updateRange(handles,startTime,endTime);
     guidata(hObject, handles);
 end
@@ -272,7 +279,7 @@ guidata(hObject, handles);
 
 
 % --- Executes during object creation, after setting all properties.
-function popupmenu1_CreateFcn(hObject, ~, handles)
+function popupmenu1_CreateFcn(hObject, ~, ~)
 % hObject    handle to popupmenu1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
