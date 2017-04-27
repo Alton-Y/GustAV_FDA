@@ -148,13 +148,7 @@ if FileName ~= 0
     [handles] = GuiMSG(handles,sprintf('LOADING %s ...',FileName));
     INFO.timezone = 0;
     handles.fps = 30;
-    % LOAD VIDEO
-    try
-        [VIDEO] = fcnVIDEOLOAD();
-        %Assign FMT to the main workspace.
-        assignin('base','VIDEO',VIDEO);
-        handles.VIDEO = VIDEO;
-    end
+
     try
         [INFO, FMT] = fcnFMTLOAD(INFO,PathName,FileName,16);%16.33
         [INFO] = fcnGETINFO(INFO, FMT);
@@ -170,6 +164,7 @@ if FileName ~= 0
         %Assign INFO to the main workspace.
         assignin('base','INFO',INFO);
         
+        
         handles.DATA.FMT = FMT;
         handles.plotDatenumArray = fcnGETFRAMES(handles.DATA.INFO.startTimeLOCAL,handles.DATA.INFO.endTimeLOCAL,handles.fps);
         handles.DATA.SYNCFMT = fcnSYNCFMT( handles.DATA.FMT, handles.plotDatenumArray );
@@ -180,6 +175,20 @@ if FileName ~= 0
         
         handles.TXT_startTime.String = datestr(handles.plotDatenumArray(1),'yy-mm-dd HH:MM:SS');
         handles.TXT_endTime.String = datestr(handles.plotDatenumArray(end),'yy-mm-dd HH:MM:SS');
+        
+%         % TEST
+%         datestr(handles.VIDEO.videoStartDatenum)
+%         datestr(INFO.pixhawkstart + 592.3/86400)
+%         
+%         handles.VIDEO.videoStartDatenum = INFO.pixhawkstart + 592.3/86400;
+%         datestr(handles.VIDEO.videoStartDatenum)
+        
+        % LOAD VIDEO
+            [handles] = fcnVIDEOLOAD(handles);
+            %Assign FMT to the main workspace.
+            assignin('base','VIDEO',handles.VIDEO);
+
+        
         
         try
             [handles] = GuiMSG(handles,'');
@@ -196,6 +205,8 @@ if FileName ~= 0
         handles.slider1.Enable = 'off';
         [ handles ] = ALLFAIL( handles, 1 );
     end
+    
+    
     
     sliderUpdate(handles);
     fcnUPDATE(handles,1)

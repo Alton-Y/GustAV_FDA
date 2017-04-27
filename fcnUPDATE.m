@@ -5,6 +5,7 @@ FMT = handles.DATA.FMT;
 SYNCFMT = handles.DATA.SYNCFMT;
 INFO = handles.DATA.INFO;
 DISP = handles.DISP;
+VIDEO = handles.VIDEO;
 currentFrameDatenum = handles.plotDatenumArray(n);
 %%% test only, print datestr format of current frame time
 
@@ -25,7 +26,17 @@ DISP.tTOP.UASTIME.String = sprintf('%-5.1f',(currentFrameDatenum-INFO.pixhawksta
 
 
 %% CAM
-handles.VIDEO.vidObj.CurrentTime = 86400*(currentFrameDatenum-handles.VIDEO.videoStartDatenum);
+videoCurrentTime = 86400*(currentFrameDatenum-VIDEO.videoStartDatenum);
+if videoCurrentTime > 0
+    VIDEO.vidObj.CurrentTime = videoCurrentTime;
+else
+    videoCurrentTime
+    VIDEO.vidObj.CurrentTime = 0;
+end
+
+
+
+
 DISP.tTOP.CAMTIME.String = sprintf('%-5.1f',(handles.VIDEO.vidObj.CurrentTime));
 
 % Read/Update Frame
